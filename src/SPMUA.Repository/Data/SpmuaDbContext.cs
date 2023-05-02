@@ -12,11 +12,11 @@ namespace SPMUA.Repository.Data
         {
       
         }
-        public DbSet<Appointment> Appointment { get; set; }
-        public DbSet<AppointmentStatus> AppointmentStatus { get; set;}
-        public DbSet<EmailTemplate> EmailTemplate { get; set; }
-        public DbSet<Service> Service { get; set; }
-        public DbSet<Vacation> Vacation { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<AppointmentStatus> AppointmentStatuses { get; set;}
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Vacation> Vacations { get; set; }
         public DbSet<WorkingDay> WorkingDays { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
