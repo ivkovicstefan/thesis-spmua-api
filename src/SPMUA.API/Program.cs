@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using SPMUA.API.Middlewares;
+using SPMUA.Repository.Contracts;
 using SPMUA.Repository.Data;
+using SPMUA.Repository.Implementations;
+using SPMUA.Service.Contracts;
+using SPMUA.Service.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,8 @@ builder.Services.AddDbContext<SpmuaDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SPMUADB"));
 });
+builder.Services.AddScoped<IWorkingDayService, WorkingDayService>();
+builder.Services.AddScoped<IWorkingDayRepository, WorkingDayRepository>();
 
 var app = builder.Build();
 
