@@ -14,7 +14,13 @@ namespace SPMUA.Service.Validators.WorkingDay
         {
             RuleFor(wd => wd.WorkingDayName).NotEmpty()
                                             .MaximumLength(9);
-            RuleFor(wd => wd.StartTime).LessThanOrEqualTo(wd => wd.EndTime);
+
+            RuleFor(wd => wd.StartTime).NotNull()
+                                       .When(wd => wd.IsActive);
+
+            RuleFor(wd => wd.EndTime).GreaterThan(wd => wd.StartTime)
+                                     .NotNull()
+                                     .When(wd => wd.IsActive);
         }
     }
 }

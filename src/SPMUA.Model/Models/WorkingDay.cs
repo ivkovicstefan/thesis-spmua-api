@@ -9,8 +9,8 @@ namespace SPMUA.Model.Models
         public int WorkingDayId { get; set; }
         [MaxLength(9)]
         public string WorkingDayName { get; set; } = null!;
-        public TimeOnly StartTime { get; set; }
-        public TimeOnly EndTime { get; set; }
+        public TimeOnly? StartTime { get; set; }
+        public TimeOnly? EndTime { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsDeleted { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

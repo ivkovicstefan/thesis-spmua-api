@@ -55,8 +55,8 @@ namespace SPMUA.Repository.Implementations
 
                     if (workingDay is not null)
                     {
-                        workingDay.StartTime = workingDayDTO.StartTime;
-                        workingDay.EndTime = workingDayDTO.EndTime;
+                        workingDay.StartTime = (workingDayDTO.IsActive) ? workingDayDTO.StartTime : null;
+                        workingDay.EndTime = (workingDayDTO.IsActive) ? workingDayDTO.EndTime : null;
                         workingDay.IsActive = workingDayDTO.IsActive;
                         workingDay.LastModifiedDate = DateTime.Now;
                     }
