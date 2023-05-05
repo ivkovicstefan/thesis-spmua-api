@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SPMUA.Model.Exceptions;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace SPMUA.API.Middlewares
@@ -11,7 +13,19 @@ namespace SPMUA.API.Middlewares
 			{
 				await next(context);
 			}
-			catch
+			catch (RequestValidationException ex)
+			{
+				context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+				var details = new
+				{
+					Title = "Validation Error",
+					Errors = ex.Errors
+				};
+
+                await context.Response.WriteAsJsonAsync(details);
+            }
+            catch (Exception)
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
