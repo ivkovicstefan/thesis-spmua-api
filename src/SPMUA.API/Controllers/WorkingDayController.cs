@@ -6,7 +6,7 @@ using System.Net;
 
 namespace SPMUA.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/working-day")]
     [ApiController]
     public class WorkingDayController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace SPMUA.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Ping()
         {
-            return new OkObjectResult("Pong");
+            return new OkObjectResult("pong");
         }
 
         [HttpGet("working-days")]

@@ -5,7 +5,7 @@ using SPMUA.Service.Contracts;
 
 namespace SPMUA.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/service-type")]
     [ApiController]
     public class ServiceTypeController : ControllerBase
     {
