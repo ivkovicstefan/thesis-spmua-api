@@ -25,6 +25,6 @@ namespace SPMUA.Model.Models
         public DateTime? LastModifiedDate { get; set; }
 
         public virtual AppointmentStatus AppointmentStatus { get; set; } = null!;
-        public virtual Service Service { get; set; } = null!;
+        public virtual ServiceType Service { get; set; } = null!;
     }
 }

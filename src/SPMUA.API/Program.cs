@@ -20,6 +20,8 @@ builder.Services.AddDbContext<SpmuaDbContext>(options =>
 });
 builder.Services.AddScoped<IWorkingDayService, WorkingDayService>();
 builder.Services.AddScoped<IWorkingDayRepository, WorkingDayRepository>();
+builder.Services.AddScoped<IServiceTypeService, ServiceTypeService>();
+builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
 
 var app = builder.Build();
 

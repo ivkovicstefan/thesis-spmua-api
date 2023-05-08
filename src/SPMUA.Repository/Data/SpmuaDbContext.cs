@@ -15,7 +15,7 @@ namespace SPMUA.Repository.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatuses { get; set;}
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
-        public DbSet<Service> Services { get; set; }
+        public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<Vacation> Vacations { get; set; }
         public DbSet<WorkingDay> WorkingDays { get; set; }
 
@@ -43,11 +43,11 @@ namespace SPMUA.Repository.Data
                                  new AppointmentStatus { AppointmentStatusId = 2, AppointmentStatusName = "Confirmed" },
                                  new AppointmentStatus { AppointmentStatusId = 3, AppointmentStatusName = "Rejected" });
 
-            modelBuilder.Entity<Service>()
-                        .HasData(new Service { ServiceId = 1, ServiceName = "Makeup", ServicePrice = 2400.00m, ServiceDuration = 60, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = true, IsAvailableOnSunday = true },
-                                 new Service { ServiceId = 2, ServiceName = "Brow lift", ServicePrice = 1500.00m, ServiceDuration = 60, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = false, IsAvailableOnSunday = false },
-                                 new Service { ServiceId = 3, ServiceName = "Lash lift", ServicePrice = 1700.00m, ServiceDuration = 90, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = false, IsAvailableOnSunday = false },
-                                 new Service { ServiceId = 4, ServiceName = "Brow & Lash lift", ServicePrice = 3000.00m, ServiceDuration = 90, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = false, IsAvailableOnSunday = false });
+            modelBuilder.Entity<ServiceType>()
+                        .HasData(new ServiceType { ServiceTypeId = 1, ServiceTypeName = "Makeup", ServiceTypePrice = 2400.00m, ServiceTypeDuration = 60, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = true, IsAvailableOnSunday = true },
+                                 new ServiceType { ServiceTypeId = 2, ServiceTypeName = "Brow lift", ServiceTypePrice = 1500.00m, ServiceTypeDuration = 60, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = false, IsAvailableOnSunday = false },
+                                 new ServiceType { ServiceTypeId = 3, ServiceTypeName = "Lash lift", ServiceTypePrice = 1700.00m, ServiceTypeDuration = 90, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = false, IsAvailableOnSunday = false },
+                                 new ServiceType { ServiceTypeId = 4, ServiceTypeName = "Brow & Lash lift", ServiceTypePrice = 3000.00m, ServiceTypeDuration = 90, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = false, IsAvailableOnSunday = false });
         }
     }
 }

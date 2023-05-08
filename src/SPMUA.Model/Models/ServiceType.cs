@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SPMUA.Model.Models
 {
-    public class Service
+    public class ServiceType
     {
-        public int ServiceId { get; set; }
+        public int ServiceTypeId { get; set; }
         [MaxLength(50)]
-        public string ServiceName { get; set; } = null!;
-        public decimal ServicePrice { get; set; }
-        public int ServiceDuration { get; set; }
+        public string ServiceTypeName { get; set; } = null!;
+        public decimal ServiceTypePrice { get; set; }
+        public int ServiceTypeDuration { get; set; }
         public bool IsAvailableOnMonday { get; set; }
         public bool IsAvailableOnTuesday { get; set; }
         public bool IsAvailableOnWednesday { get; set; }

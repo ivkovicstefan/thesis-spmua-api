@@ -25,6 +25,19 @@ namespace SPMUA.API.Middlewares
 
                 await context.Response.WriteAsJsonAsync(details);
             }
+			catch (EntityNotFoundException)
+			{
+				context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+
+				ProblemDetails details = new()
+				{
+					Type = "Not found error",
+					Title = "Resource Not Found",
+					Detail = "Resource that you are looking for is not found."
+				};
+
+				await context.Response.WriteAsJsonAsync(details);
+			}
             catch (Exception)
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
