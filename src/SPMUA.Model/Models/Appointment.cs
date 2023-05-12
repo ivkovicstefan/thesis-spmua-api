@@ -12,11 +12,11 @@ namespace SPMUA.Model.Models
         [MaxLength(35)]
         public string CustomerLastName { get; set; } = null!;
         [MaxLength(100)]
-        public string CustomerEmail { get; set; } = null!;
-        [MaxLength(15)]
+        public string? CustomerEmail { get; set; }
+        [MaxLength(10)]
         public string CustomerPhone { get; set; } = null!;
         public DateTime AppointmentDate { get; set; }
-        public int ServiceId { get; set; }
+        public int ServiceTypeId { get; set; }
         public int AppointmentStatusId { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsDeleted { get; set; }
@@ -25,6 +25,6 @@ namespace SPMUA.Model.Models
         public DateTime? LastModifiedDate { get; set; }
 
         public virtual AppointmentStatus AppointmentStatus { get; set; } = null!;
-        public virtual ServiceType Service { get; set; } = null!;
+        public virtual ServiceType ServiceType { get; set; } = null!;
     }
 }

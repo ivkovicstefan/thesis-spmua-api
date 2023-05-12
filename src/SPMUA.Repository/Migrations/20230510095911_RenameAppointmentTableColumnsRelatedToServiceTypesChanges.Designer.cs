@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPMUA.Repository.Data;
 
@@ -11,9 +12,11 @@ using SPMUA.Repository.Data;
 namespace SPMUA.Repository.Migrations
 {
     [DbContext(typeof(SpmuaDbContext))]
-    partial class SpmuaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230510095911_RenameAppointmentTableColumnsRelatedToServiceTypesChanges")]
+    partial class RenameAppointmentTableColumnsRelatedToServiceTypesChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,6 +44,7 @@ namespace SPMUA.Repository.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerEmail")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -56,8 +60,8 @@ namespace SPMUA.Repository.Migrations
 
                     b.Property<string>("CustomerPhone")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

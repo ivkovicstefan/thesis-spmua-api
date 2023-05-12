@@ -69,5 +69,26 @@ namespace SPMUA.Repository.Implementations
                 throw;
             }
         }
+
+        public async Task<ValueTuple<TimeOnly?, TimeOnly?>> GetWorkingHours(DateTime date)
+        {
+            ValueTuple<TimeOnly?, TimeOnly?> result;
+
+            try
+            {
+                string dayName = date.DayOfWeek.ToString();
+
+                result = await _spmuaDbContext.WorkingDays.Where(wd => wd.WorkingDayName.ToLower() == dayName.ToLower())
+                                                          .AsNoTracking()
+                                                          .Select(wd => ValueTuple.Create(wd.StartTime, wd.EndTime))
+                                                          .FirstOrDefaultAsync();
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
+        }
     }
 }

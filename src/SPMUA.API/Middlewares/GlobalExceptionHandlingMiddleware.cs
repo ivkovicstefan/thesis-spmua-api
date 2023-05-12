@@ -20,7 +20,8 @@ namespace SPMUA.API.Middlewares
 				var details = new
 				{
 					Title = "Validation Error",
-					Errors = ex.Errors
+					Errors = ex.Errors,
+					Message = ex.Message
 				};
 
                 await context.Response.WriteAsJsonAsync(details);

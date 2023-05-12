@@ -15,6 +15,11 @@ namespace SPMUA.Model.Exceptions
             Errors = errors;
         }
 
+        public RequestValidationException(string? message, Exception? innerException) : base(message, innerException)
+        {
+            Errors = new();
+        }
+
         public List<ValidationFailure> Errors { get; set; }
     }
 }

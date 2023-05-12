@@ -12,5 +12,7 @@ namespace SPMUA.Repository.Contracts
         Task<List<WorkingDayDTO>> GetWorkingDaysAsync();
 
         Task UpdateWorkingDaysAsync(List<WorkingDayDTO> workingDayDTOs);
+
+        Task<ValueTuple<TimeOnly?, TimeOnly?>> GetWorkingHours(DateTime date);
     }
 }
