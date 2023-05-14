@@ -121,7 +121,7 @@ namespace SPMUA.Repository.Implementations
             return result;
         }
 
-        public async Task<List<ValueTuple<TimeOnly, TimeOnly>>> GetBookedAppointmentIntervalsFor(DateTime date)
+        public async Task<List<ValueTuple<TimeOnly, TimeOnly>>> GetBookedAppointmentIntervalsForAsync(DateTime date)
         {
             List<ValueTuple<TimeOnly, TimeOnly>> result;
 

@@ -10,7 +10,7 @@ namespace SPMUA.Repository.Contracts
 
         Task<int> CreateAppointmentAsync(AppointmentDTO appointmentDTO);
 
-        Task<List<ValueTuple<TimeOnly, TimeOnly>>> GetBookedAppointmentIntervalsFor(DateTime date);
+        Task<List<ValueTuple<TimeOnly, TimeOnly>>> GetBookedAppointmentIntervalsForAsync(DateTime date);
 
         Task<List<DateOnly>> GetDatesWithAppointmentsAsync(DateTime fromDate, DateTime toDate);
     }

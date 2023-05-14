@@ -12,5 +12,7 @@ namespace SPMUA.Service.Contracts
         Task<int> CreateAppointmentAsync(AppointmentDTO appointmentDTO);
 
         Task<List<DateOnly>> GetUnavailableDatesForAsync(DateTime fromDate, DateTime toDate, int serviceTypeId);
+
+        Task<List<TimeOnly>> GetAvailableHoursForAsync(DateTime date,  int serviceTypeId);
     }
 }

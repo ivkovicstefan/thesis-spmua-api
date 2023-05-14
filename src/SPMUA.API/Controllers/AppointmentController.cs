@@ -52,11 +52,20 @@ namespace SPMUA.API.Controllers
 
         [HttpGet("appointment/unavailable-dates/{serviceTypeId}")]
         [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUnavailableDates(DateTime fromDate, DateTime toDate, int serviceTypeId)
+        public async Task<IActionResult> GetUnavailableDates([FromQuery] DateTime fromDate,
+                                                             [FromQuery] DateTime toDate, 
+                                                             int serviceTypeId)
         {
             return new OkObjectResult(await _appointmentService.GetUnavailableDatesForAsync(fromDate, 
                                                                                             toDate, 
                                                                                             serviceTypeId));
+        }
+
+        [HttpGet("appointment/available-hours/serviceTypeId")]
+        [ProducesResponseType(typeof(TimeOnly), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAvailableHours([FromQuery] DateTime date, int serviceTypeId)
+        {
+            return new OkObjectResult(await _appointmentService.GetAvailableHoursForAsync(date, serviceTypeId));
         }
     }
 }

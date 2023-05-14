@@ -93,7 +93,7 @@ namespace SPMUA.Service.Implementations
                 = await _serviceTypeRepository.GetServiceTypeAsync(serviceTypeId);
 
             List<ValueTuple<TimeOnly, TimeOnly>> bookedIntervals 
-                = await _appointmentRepository.GetBookedAppointmentIntervalsFor(date);
+                = await _appointmentRepository.GetBookedAppointmentIntervalsForAsync(date);
 
             ValueTuple<TimeOnly, TimeOnly> requestedInterval 
                 = ValueTuple.Create(TimeOnly.FromDateTime(date),
@@ -133,7 +133,7 @@ namespace SPMUA.Service.Implementations
                 = await _serviceTypeRepository.GetServiceTypeAsync(serviceTypeId);
 
             List<ValueTuple<TimeOnly, TimeOnly>> bookedIntervals
-                = await _appointmentRepository.GetBookedAppointmentIntervalsFor(potentialBookedDate);
+                = await _appointmentRepository.GetBookedAppointmentIntervalsForAsync(potentialBookedDate);
 
             ValueTuple<TimeOnly, TimeOnly> potentionalFreeInterval
                 = ValueTuple.Create(workingHours.Item1.Value,
@@ -164,6 +164,43 @@ namespace SPMUA.Service.Implementations
             {
                 return false;
             }
+        }
+
+        public async Task<List<TimeOnly>> GetAvailableHoursForAsync(DateTime date, int serviceTypeId)
+        {
+            List<TimeOnly> result = new();
+
+            (TimeOnly? openTime, TimeOnly? closeTime)
+                = await _workingDayRepository.GetWorkingHours(date);
+
+            if (openTime is null || closeTime is null)
+            {
+                return result;
+            }
+
+            ServiceTypeDTO requestedServiceType
+                = await _serviceTypeRepository.GetServiceTypeAsync(serviceTypeId);
+
+            List<ValueTuple<TimeOnly, TimeOnly>> bookedIntervals
+                = await _appointmentRepository.GetBookedAppointmentIntervalsForAsync(date);
+
+            ValueTuple<TimeOnly, TimeOnly> potentionalFreeInterval
+                = ValueTuple.Create(openTime.Value,
+                                    Helper.RoundToNextHour(openTime.Value.AddMinutes(requestedServiceType.ServiceTypeDuration)));
+
+            while (potentionalFreeInterval.Item1 < closeTime)
+            {
+                if (!bookedIntervals.Any(bi => bi.Item2 > potentionalFreeInterval.Item1 
+                                           && bi.Item1 < potentionalFreeInterval.Item2))
+                {
+                    result.Add(potentionalFreeInterval.Item1);
+                }
+
+                potentionalFreeInterval.Item1 = potentionalFreeInterval.Item1.AddHours(1);
+                potentionalFreeInterval.Item2 = potentionalFreeInterval.Item2.AddHours(1);
+            }
+
+            return result;
         }
     }
 }
