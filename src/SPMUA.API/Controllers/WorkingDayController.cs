@@ -26,15 +26,15 @@ namespace SPMUA.API.Controllers
 
         [HttpGet("working-days")]
         [ProducesResponseType(typeof(List<WorkingDayDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetWorkingDays() 
+        public async Task<IActionResult> GetAllWorkingDaysAsync() 
         {
-            return new OkObjectResult(await _workingDayService.GetWorkingDaysAsync());
+            return new OkObjectResult(await _workingDayService.GetAllWorkingDaysAsync());
         }
 
         [HttpPut("working-days")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateWorkingDays(List<WorkingDayDTO> workingDayDTOs)
+        public async Task<IActionResult> UpdateWorkingDaysAsync(List<WorkingDayDTO> workingDayDTOs)
         {
             await _workingDayService.UpdateWorkingDaysAsync(workingDayDTOs);
 

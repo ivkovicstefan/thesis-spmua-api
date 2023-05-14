@@ -24,7 +24,7 @@ namespace SPMUA.API.Controllers
 
         [HttpGet("appointments")]
         [ProducesResponseType(typeof(List<AppointmentDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAppointments()
+        public async Task<IActionResult> GetAllAppointmentsAsync()
         {
             return new OkObjectResult(await _appointmentService.GetAllAppointmentsAsync());
         }
@@ -32,7 +32,7 @@ namespace SPMUA.API.Controllers
         [HttpGet("appointment/{appointmentId}")]
         [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAppointmentById(int appointmentId)
+        public async Task<IActionResult> GetAppointmentByIdAsync(int appointmentId)
         {
             return new OkObjectResult(await _appointmentService.GetAppointmentByIdAsync(appointmentId));
         }
@@ -40,11 +40,11 @@ namespace SPMUA.API.Controllers
         [HttpPost("appointment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAppointment(AppointmentDTO appointmentDTO)
+        public async Task<IActionResult> CreateAppointmentAsync(AppointmentDTO appointmentDTO)
         {
             int result = await _appointmentService.CreateAppointmentAsync(appointmentDTO);
 
-            return new CreatedAtActionResult(nameof(GetAppointmentById),
+            return new CreatedAtActionResult(nameof(GetAppointmentByIdAsync),
                                              nameof(AppointmentController).Replace("Controller", ""),
                                              new { appointmentId = result },
                                              null);
@@ -52,9 +52,9 @@ namespace SPMUA.API.Controllers
 
         [HttpGet("appointment/unavailable-dates/{serviceTypeId}")]
         [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUnavailableDates([FromQuery] DateTime fromDate,
-                                                             [FromQuery] DateTime toDate, 
-                                                             int serviceTypeId)
+        public async Task<IActionResult> GetUnavailableDatesAsync([FromQuery] DateTime fromDate,
+                                                                  [FromQuery] DateTime toDate, 
+                                                                  int serviceTypeId)
         {
             return new OkObjectResult(await _appointmentService.GetUnavailableDatesForAsync(fromDate, 
                                                                                             toDate, 
@@ -63,7 +63,7 @@ namespace SPMUA.API.Controllers
 
         [HttpGet("appointment/available-hours/serviceTypeId")]
         [ProducesResponseType(typeof(TimeOnly), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAvailableHours([FromQuery] DateTime date, int serviceTypeId)
+        public async Task<IActionResult> GetAvailableHoursAsync([FromQuery] DateTime date, int serviceTypeId)
         {
             return new OkObjectResult(await _appointmentService.GetAvailableHoursForAsync(date, serviceTypeId));
         }

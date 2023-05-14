@@ -16,7 +16,7 @@ namespace SPMUA.Repository.Implementations
             _spmuaDbContext = spmuaDbContext;
         }
 
-        public async Task<List<ServiceTypeDTO>> GetServiceTypesAsync()
+        public async Task<List<ServiceTypeDTO>> GetAllServiceTypesAsync()
         {
             List<ServiceTypeDTO> result = new();
 
@@ -48,7 +48,7 @@ namespace SPMUA.Repository.Implementations
             return result;
         }
 
-        public async Task<ServiceTypeDTO> GetServiceTypeAsync(int serviceTypeId)
+        public async Task<ServiceTypeDTO> GetServiceTypeByIdAsync(int serviceTypeId)
         {
             ServiceTypeDTO? result = null;
 

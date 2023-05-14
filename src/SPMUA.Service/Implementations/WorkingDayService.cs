@@ -15,9 +15,9 @@ namespace SPMUA.Service.Implementations
         {
             _workingDayRepository = workingDayRepository;
         }
-        public async Task<List<WorkingDayDTO>> GetWorkingDaysAsync()
+        public async Task<List<WorkingDayDTO>> GetAllWorkingDaysAsync()
         {
-            return await _workingDayRepository.GetWorkingDaysAsync();
+            return await _workingDayRepository.GetAllWorkingDaysAsync();
         }
 
         public async Task UpdateWorkingDaysAsync(List<WorkingDayDTO> workingDayDTOs)

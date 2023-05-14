@@ -9,7 +9,7 @@ namespace SPMUA.Service.Contracts
 {
     public interface IWorkingDayService
     {
-        Task<List<WorkingDayDTO>> GetWorkingDaysAsync();
+        Task<List<WorkingDayDTO>> GetAllWorkingDaysAsync();
 
         Task UpdateWorkingDaysAsync(List<WorkingDayDTO> workingDayDTOs);
     }

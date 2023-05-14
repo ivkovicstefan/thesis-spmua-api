@@ -19,7 +19,7 @@ namespace SPMUA.Repository.Implementations
         {
             _spmuaDbContext = spmuaDbContext;
         }
-        public async Task<List<WorkingDayDTO>> GetWorkingDaysAsync()
+        public async Task<List<WorkingDayDTO>> GetAllWorkingDaysAsync()
         {
             List<WorkingDayDTO> result = new();
 
@@ -70,7 +70,7 @@ namespace SPMUA.Repository.Implementations
             }
         }
 
-        public async Task<ValueTuple<TimeOnly?, TimeOnly?>> GetWorkingHours(DateTime date)
+        public async Task<ValueTuple<TimeOnly?, TimeOnly?>> GetWorkingHoursForAsync(DateTime date)
         {
             ValueTuple<TimeOnly?, TimeOnly?> result;
 

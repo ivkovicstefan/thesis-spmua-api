@@ -16,14 +16,14 @@ namespace SPMUA.Service.Implementations
             _serviceTypeRepository = serviceTypeRepository;
         }
 
-        public async Task<List<ServiceTypeDTO>> GetServiceTypesAsync()
+        public async Task<List<ServiceTypeDTO>> GetAllServiceTypesAsync()
         {
-            return await _serviceTypeRepository.GetServiceTypesAsync();
+            return await _serviceTypeRepository.GetAllServiceTypesAsync();
         }
 
-        public async Task<ServiceTypeDTO> GetServiceTypeAsync(int serviceTypeId)
+        public async Task<ServiceTypeDTO> GetServiceTypeByIdAsync(int serviceTypeId)
         {
-            return await _serviceTypeRepository.GetServiceTypeAsync(serviceTypeId);
+            return await _serviceTypeRepository.GetServiceTypeByIdAsync(serviceTypeId);
         }
 
         public async Task<int> CreateServiceTypeAsync(ServiceTypeDTO serviceTypeDTO)

@@ -43,7 +43,7 @@ namespace SPMUA.Service.Implementations
 
             validator.Validate(appointmentDTO);
 
-            if (await IsAppointmentDateTimeAvailableFor(appointmentDTO.ServiceTypeId, appointmentDTO.AppointmentDate))
+            if (await IsAppointmentDateTimeAvailableForAsync(appointmentDTO.ServiceTypeId, appointmentDTO.AppointmentDate))
             {
                 result = await _appointmentRepository.CreateAppointmentAsync(appointmentDTO);
             }
@@ -68,7 +68,7 @@ namespace SPMUA.Service.Implementations
 
             foreach (var appointmentDate in distinctAppointmentDates)
             {
-                if (!await IsAppointmentDateAvailableFor(serviceTypeId, appointmentDate))
+                if (!await IsAppointmentDateAvailableForAsync(serviceTypeId, appointmentDate))
                 {
                     result.Add(appointmentDate);
                 }
@@ -77,10 +77,10 @@ namespace SPMUA.Service.Implementations
             return result;
         }
 
-        private async Task<bool> IsAppointmentDateTimeAvailableFor(int serviceTypeId, DateTime date)
+        private async Task<bool> IsAppointmentDateTimeAvailableForAsync(int serviceTypeId, DateTime date)
         {
             ValueTuple<TimeOnly?, TimeOnly?> workingHours 
-                = await _workingDayRepository.GetWorkingHours(date);
+                = await _workingDayRepository.GetWorkingHoursForAsync(date);
 
             // Check if working day is still active
 
@@ -90,7 +90,7 @@ namespace SPMUA.Service.Implementations
             }
 
             ServiceTypeDTO requestedServiceType 
-                = await _serviceTypeRepository.GetServiceTypeAsync(serviceTypeId);
+                = await _serviceTypeRepository.GetServiceTypeByIdAsync(serviceTypeId);
 
             List<ValueTuple<TimeOnly, TimeOnly>> bookedIntervals 
                 = await _appointmentRepository.GetBookedAppointmentIntervalsForAsync(date);
@@ -117,12 +117,12 @@ namespace SPMUA.Service.Implementations
             return true;
         }
 
-        private async Task<bool> IsAppointmentDateAvailableFor(int serviceTypeId, DateOnly date)
+        private async Task<bool> IsAppointmentDateAvailableForAsync(int serviceTypeId, DateOnly date)
         {
             DateTime potentialBookedDate = date.ToDateTime(TimeOnly.MinValue);
 
             ValueTuple<TimeOnly?, TimeOnly?> workingHours
-                = await _workingDayRepository.GetWorkingHours(potentialBookedDate);
+                = await _workingDayRepository.GetWorkingHoursForAsync(potentialBookedDate);
 
             if (workingHours.Item1 is null || workingHours.Item2 is null)
             {
@@ -130,7 +130,7 @@ namespace SPMUA.Service.Implementations
             }
 
             ServiceTypeDTO requestedServiceType
-                = await _serviceTypeRepository.GetServiceTypeAsync(serviceTypeId);
+                = await _serviceTypeRepository.GetServiceTypeByIdAsync(serviceTypeId);
 
             List<ValueTuple<TimeOnly, TimeOnly>> bookedIntervals
                 = await _appointmentRepository.GetBookedAppointmentIntervalsForAsync(potentialBookedDate);
@@ -171,7 +171,7 @@ namespace SPMUA.Service.Implementations
             List<TimeOnly> result = new();
 
             (TimeOnly? openTime, TimeOnly? closeTime)
-                = await _workingDayRepository.GetWorkingHours(date);
+                = await _workingDayRepository.GetWorkingHoursForAsync(date);
 
             if (openTime is null || closeTime is null)
             {
@@ -179,7 +179,7 @@ namespace SPMUA.Service.Implementations
             }
 
             ServiceTypeDTO requestedServiceType
-                = await _serviceTypeRepository.GetServiceTypeAsync(serviceTypeId);
+                = await _serviceTypeRepository.GetServiceTypeByIdAsync(serviceTypeId);
 
             List<ValueTuple<TimeOnly, TimeOnly>> bookedIntervals
                 = await _appointmentRepository.GetBookedAppointmentIntervalsForAsync(date);

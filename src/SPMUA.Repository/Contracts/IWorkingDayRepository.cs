@@ -9,10 +9,10 @@ namespace SPMUA.Repository.Contracts
 {
     public interface IWorkingDayRepository
     {
-        Task<List<WorkingDayDTO>> GetWorkingDaysAsync();
+        Task<List<WorkingDayDTO>> GetAllWorkingDaysAsync();
 
         Task UpdateWorkingDaysAsync(List<WorkingDayDTO> workingDayDTOs);
 
-        Task<ValueTuple<TimeOnly?, TimeOnly?>> GetWorkingHours(DateTime date);
+        Task<ValueTuple<TimeOnly?, TimeOnly?>> GetWorkingHoursForAsync(DateTime date);
     }
 }

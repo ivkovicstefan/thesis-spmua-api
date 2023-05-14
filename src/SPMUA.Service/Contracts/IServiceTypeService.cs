@@ -5,9 +5,9 @@ namespace SPMUA.Service.Contracts
 {
     public interface IServiceTypeService
     {
-        Task<List<ServiceTypeDTO>> GetServiceTypesAsync();
+        Task<List<ServiceTypeDTO>> GetAllServiceTypesAsync();
 
-        Task<ServiceTypeDTO> GetServiceTypeAsync(int serviceTypeId);
+        Task<ServiceTypeDTO> GetServiceTypeByIdAsync(int serviceTypeId);
 
         Task<int> CreateServiceTypeAsync(ServiceTypeDTO serviceTypeDTO);
 
