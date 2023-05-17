@@ -52,20 +52,22 @@ namespace SPMUA.API.Controllers
 
         [HttpGet("appointment/unavailable-dates/{serviceTypeId}")]
         [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUnavailableDatesAsync([FromQuery] DateTime fromDate,
-                                                                  [FromQuery] DateTime toDate, 
-                                                                  int serviceTypeId)
+        public async Task<IActionResult> GetUnavailableAppointmentDatesAsync([FromQuery] DateTime fromDate,
+                                                                             [FromQuery] DateTime toDate, 
+                                                                             int serviceTypeId)
         {
-            return new OkObjectResult(await _appointmentService.GetUnavailableDatesForAsync(fromDate, 
-                                                                                            toDate, 
-                                                                                            serviceTypeId));
+            return new OkObjectResult(await _appointmentService.GetUnavailableAppointmentDatesForAsync(fromDate, 
+                                                                                                       toDate, 
+                                                                                                       serviceTypeId));
         }
 
         [HttpGet("appointment/available-hours/serviceTypeId")]
         [ProducesResponseType(typeof(TimeOnly), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAvailableHoursAsync([FromQuery] DateTime date, int serviceTypeId)
+        public async Task<IActionResult> GetAvailableAppointmentHoursAsync([FromQuery] DateTime date, 
+                                                                           int serviceTypeId)
         {
-            return new OkObjectResult(await _appointmentService.GetAvailableHoursForAsync(date, serviceTypeId));
+            return new OkObjectResult(await _appointmentService.GetAvailableAppointmentHoursForAsync(date, 
+                                                                                                     serviceTypeId));
         }
     }
 }

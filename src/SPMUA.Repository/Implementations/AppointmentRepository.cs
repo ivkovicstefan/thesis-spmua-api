@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SPMUA.Model.Commons;
 using SPMUA.Model.Dictionaries.Appointment;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.Exceptions;
@@ -24,7 +25,7 @@ namespace SPMUA.Repository.Implementations
 
             try
             {
-                result = await _spmuaDbContext.Appointments.Where(a => a.AppointmentDate.Date >= DateTime.Now.Date
+                result = await _spmuaDbContext.Appointments.Where(a => a.AppointmentDate >= DateTime.Now
                                                                     && a.IsActive
                                                                     && !a.IsDeleted)
                                                            .AsNoTracking()
@@ -121,9 +122,9 @@ namespace SPMUA.Repository.Implementations
             return result;
         }
 
-        public async Task<List<ValueTuple<TimeOnly, TimeOnly>>> GetBookedAppointmentIntervalsForAsync(DateTime date)
+        public async Task<List<TimeInterval>> GetBookedAppointmentIntervalsForAsync(DateTime date)
         {
-            List<ValueTuple<TimeOnly, TimeOnly>> result;
+            List<TimeInterval> result;
 
             try
             {
@@ -131,8 +132,8 @@ namespace SPMUA.Repository.Implementations
                                                                     && a.AppointmentStatusId != (int)AppointmentStatusEnum.Rejected)
                                                            .OrderBy(a => a.AppointmentDate)
                                                            .AsNoTracking()
-                                                           .Select(a => ValueTuple.Create(TimeOnly.FromDateTime(a.AppointmentDate),
-                                                                        Helper.RoundToNextHour(TimeOnly.FromDateTime(a.AppointmentDate.AddMinutes(a.ServiceType.ServiceTypeDuration)))))
+                                                           .Select(a => Helper.CreateAppointmentTimeInterval(TimeOnly.FromDateTime(a.AppointmentDate),
+                                                                                                             a.ServiceType.ServiceTypeDuration))
                                                            .ToListAsync();
             }
             catch

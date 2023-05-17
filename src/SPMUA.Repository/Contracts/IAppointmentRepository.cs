@@ -1,4 +1,5 @@
-﻿using SPMUA.Model.DTOs.Appointment;
+﻿using SPMUA.Model.Commons;
+using SPMUA.Model.DTOs.Appointment;
 
 namespace SPMUA.Repository.Contracts
 {
@@ -10,7 +11,7 @@ namespace SPMUA.Repository.Contracts
 
         Task<int> CreateAppointmentAsync(AppointmentDTO appointmentDTO);
 
-        Task<List<ValueTuple<TimeOnly, TimeOnly>>> GetBookedAppointmentIntervalsForAsync(DateTime date);
+        Task<List<TimeInterval>> GetBookedAppointmentIntervalsForAsync(DateTime date);
 
         Task<List<DateOnly>> GetDatesWithAppointmentsAsync(DateTime fromDate, DateTime toDate);
     }

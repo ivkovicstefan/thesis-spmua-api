@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPMUA.Model.Commons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,11 @@ namespace SPMUA.Utility.Helpers
             }
 
             return time;
+        }
+
+        public static TimeInterval CreateAppointmentTimeInterval(TimeOnly time, int duration)
+        {
+            return new TimeInterval(time, RoundToNextHour(time.AddMinutes(duration)));
         }
     }
 }

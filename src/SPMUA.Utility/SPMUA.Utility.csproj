@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SPMUA.Model\SPMUA.Model.csproj" />
+  </ItemGroup>
+
 </Project>
