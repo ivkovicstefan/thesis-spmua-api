@@ -28,7 +28,6 @@ namespace SPMUA.Repository.Implementations
                 result = await _spmuaDbContext.Appointments.Where(a => a.AppointmentDate >= DateTime.Now
                                                                     && a.IsActive
                                                                     && !a.IsDeleted)
-                                                           .AsNoTracking()
                                                            .Select(a => new AppointmentDTO() 
                                                            { 
                                                                AppointmentId = a.AppointmentId,
@@ -62,7 +61,6 @@ namespace SPMUA.Repository.Implementations
                 result = await _spmuaDbContext.Appointments.Where(a => a.AppointmentId == appointmentId
                                                                     && a.IsActive
                                                                     && !a.IsDeleted)
-                                                           .AsNoTracking()
                                                            .Select(a => new AppointmentDTO()
                                                            {
                                                                AppointmentId = a.AppointmentId,
@@ -131,7 +129,6 @@ namespace SPMUA.Repository.Implementations
                 result = await _spmuaDbContext.Appointments.Where(a => a.AppointmentDate.Date == date.Date 
                                                                     && a.AppointmentStatusId != (int)AppointmentStatusEnum.Rejected)
                                                            .OrderBy(a => a.AppointmentDate)
-                                                           .AsNoTracking()
                                                            .Select(a => Helper.CreateAppointmentTimeInterval(TimeOnly.FromDateTime(a.AppointmentDate),
                                                                                                              a.ServiceType.ServiceTypeDuration))
                                                            .ToListAsync();
@@ -154,7 +151,6 @@ namespace SPMUA.Repository.Implementations
                                                            .Where(a => a.Key > DateTime.Now.Date
                                                                     && a.Key > fromDate
                                                                     && a.Key <= toDate)
-                                                           .AsNoTracking()
                                                            .Select(s => DateOnly.FromDateTime(s.Key))
                                                            .ToListAsync();
             }

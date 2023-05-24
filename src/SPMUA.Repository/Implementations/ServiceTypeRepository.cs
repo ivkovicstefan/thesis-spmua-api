@@ -23,7 +23,6 @@ namespace SPMUA.Repository.Implementations
             try
             {
                 result = await _spmuaDbContext.ServiceTypes.Where(st => st.IsActive && !st.IsDeleted)
-                                                           .AsNoTracking()
                                                            .Select(st => new ServiceTypeDTO()
                                                            {
                                                                ServiceTypeId = st.ServiceTypeId,
@@ -57,7 +56,6 @@ namespace SPMUA.Repository.Implementations
                 result = await _spmuaDbContext.ServiceTypes.Where(st => st.ServiceTypeId == serviceTypeId 
                                                                      && st.IsActive 
                                                                      && !st.IsDeleted)
-                                                           .AsNoTracking()
                                                            .Select(st => new ServiceTypeDTO()
                                                            {
                                                                ServiceTypeId = st.ServiceTypeId,
@@ -127,6 +125,7 @@ namespace SPMUA.Repository.Implementations
                 ServiceType? serviceType = await _spmuaDbContext.ServiceTypes.Where(st => st.ServiceTypeId == serviceTypeDTO.ServiceTypeId 
                                                                                        && st.IsActive 
                                                                                        && !st.IsDeleted)
+                                                                             .AsTracking()
                                                                              .FirstOrDefaultAsync();
 
                 if (serviceType is not null)
@@ -163,6 +162,7 @@ namespace SPMUA.Repository.Implementations
                 ServiceType? serviceType = await _spmuaDbContext.ServiceTypes.Where(st => st.ServiceTypeId == serviceTypeId
                                                                                        && st.IsActive
                                                                                        && !st.IsDeleted)
+                                                                             .AsTracking()
                                                                              .FirstOrDefaultAsync();
 
                 if (serviceType is not null)

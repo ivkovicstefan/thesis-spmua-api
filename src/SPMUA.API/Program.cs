@@ -18,6 +18,7 @@ builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 builder.Services.AddDbContext<SpmuaDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SPMUADB"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 builder.Services.AddScoped<IWorkingDayService, WorkingDayService>();
 builder.Services.AddScoped<IWorkingDayRepository, WorkingDayRepository>();
