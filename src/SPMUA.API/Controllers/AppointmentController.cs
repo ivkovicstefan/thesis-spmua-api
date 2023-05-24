@@ -32,7 +32,7 @@ namespace SPMUA.API.Controllers
         [HttpGet("appointment/{appointmentId}")]
         [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAppointmentByIdAsync(int appointmentId)
+        public async Task<IActionResult> GetAppointmentByIdAsync([FromRoute] int appointmentId)
         {
             return new OkObjectResult(await _appointmentService.GetAppointmentByIdAsync(appointmentId));
         }
@@ -40,7 +40,7 @@ namespace SPMUA.API.Controllers
         [HttpPost("appointment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAppointmentAsync(AppointmentDTO appointmentDTO)
+        public async Task<IActionResult> CreateAppointmentAsync([FromBody] AppointmentDTO appointmentDTO)
         {
             int result = await _appointmentService.CreateAppointmentAsync(appointmentDTO);
 
@@ -50,21 +50,21 @@ namespace SPMUA.API.Controllers
                                              null);
         }
 
-        [HttpGet("appointment/unavailable-dates/{serviceTypeId}")]
+        [HttpGet("unavailable-dates")]
         [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUnavailableAppointmentDatesAsync([FromQuery] DateTime fromDate,
                                                                              [FromQuery] DateTime toDate, 
-                                                                             int serviceTypeId)
+                                                                             [FromQuery] int serviceTypeId)
         {
             return new OkObjectResult(await _appointmentService.GetUnavailableAppointmentDatesForAsync(fromDate, 
                                                                                                        toDate, 
                                                                                                        serviceTypeId));
         }
 
-        [HttpGet("appointment/available-hours/serviceTypeId")]
+        [HttpGet("available-hours")]
         [ProducesResponseType(typeof(TimeOnly), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAvailableAppointmentHoursAsync([FromQuery] DateTime date, 
-                                                                           int serviceTypeId)
+                                                                           [FromQuery] int serviceTypeId)
         {
             return new OkObjectResult(await _appointmentService.GetAvailableAppointmentHoursForAsync(date, 
                                                                                                      serviceTypeId));

@@ -33,7 +33,7 @@ namespace SPMUA.API.Controllers
         [HttpGet("service-types/{serviceTypeId}")]
         [ProducesResponseType(typeof(ServiceTypeDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetServiceTypeByIdAsync(int serviceTypeId)
+        public async Task<IActionResult> GetServiceTypeByIdAsync([FromRoute] int serviceTypeId)
         {
             return new OkObjectResult(await _serviceTypeService.GetServiceTypeByIdAsync(serviceTypeId));
         }
@@ -41,7 +41,7 @@ namespace SPMUA.API.Controllers
         [HttpPost("service-type")]
         [ProducesResponseType(typeof(ServiceTypeDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateServiceTypeAsync(ServiceTypeDTO serviceTypeDTO)
+        public async Task<IActionResult> CreateServiceTypeAsync([FromBody] ServiceTypeDTO serviceTypeDTO)
         {
             int result = await _serviceTypeService.CreateServiceTypeAsync(serviceTypeDTO);
 
@@ -55,7 +55,7 @@ namespace SPMUA.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateServiceTypeAsync(ServiceTypeDTO serviceTypeDTO)
+        public async Task<IActionResult> UpdateServiceTypeAsync([FromBody] ServiceTypeDTO serviceTypeDTO)
         {
             await _serviceTypeService.UpdateServiceTypeAsync(serviceTypeDTO);
 
@@ -65,7 +65,7 @@ namespace SPMUA.API.Controllers
         [HttpDelete("service-type/{serviceTypeId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteServiceTypeAsync(int serviceTypeId)
+        public async Task<IActionResult> DeleteServiceTypeAsync([FromRoute] int serviceTypeId)
         {
             await _serviceTypeService.DeleteServiceTypeAsync(serviceTypeId);
 

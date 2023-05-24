@@ -34,7 +34,7 @@ namespace SPMUA.API.Controllers
         [HttpPut("working-days")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateWorkingDaysAsync(List<WorkingDayDTO> workingDayDTOs)
+        public async Task<IActionResult> UpdateWorkingDaysAsync([FromBody] List<WorkingDayDTO> workingDayDTOs)
         {
             await _workingDayService.UpdateWorkingDaysAsync(workingDayDTOs);
 
