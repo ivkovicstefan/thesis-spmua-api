@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SPMUA.Model.Commons;
+using SPMUA.Model.Dictionaries.Appointment;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.DTOs.ServiceType;
 using SPMUA.Model.Exceptions;
@@ -199,6 +200,31 @@ namespace SPMUA.Service.Implementations
             }
 
             return result;
+        }
+
+        public async Task UpdateAppointmentStatusAsync(int appointmentId, bool isAppointmentConfirmed)
+        {
+            if (isAppointmentConfirmed)
+            {
+                await _appointmentRepository.UpdateAppointmentStatusAsync(appointmentId, 
+                                                                          (int)AppointmentStatusEnum.Confirmed);
+
+                // TODO: Send appointment confirmation email to client
+            }
+            else
+            {
+                await _appointmentRepository.UpdateAppointmentStatusAsync(appointmentId, 
+                                                                          (int)AppointmentStatusEnum.Rejected);
+
+                // TODO: Send appointment rejection email to client
+            }
+        }
+
+        public async Task<string> GetAppointmentmentStatusByIdAsync(int appointmentId)
+        {
+            AppointmentDTO requestedAppointment = await _appointmentRepository.GetAppointmentByIdAsync(appointmentId);
+
+            return requestedAppointment.AppointmentStatusName;
         }
     }
 }

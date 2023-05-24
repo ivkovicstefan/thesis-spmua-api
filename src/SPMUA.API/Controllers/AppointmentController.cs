@@ -69,5 +69,24 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _appointmentService.GetAvailableAppointmentHoursForAsync(date, 
                                                                                                      serviceTypeId));
         }
+
+        [HttpGet("appointment/{appointmentId}/status")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAppointmentStatusByIdAsync([FromRoute] int appointmentId)
+        {
+            return new OkObjectResult(await _appointmentService.GetAppointmentmentStatusByIdAsync(appointmentId));
+        }
+
+        [HttpPatch("appointment/{appointmentId}/status")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateAppointmentStatusAsync([FromRoute] int appointmentId,
+                                                                      [FromQuery] bool isAppointmentConfirmed)
+        {
+            await _appointmentService.UpdateAppointmentStatusAsync(appointmentId, isAppointmentConfirmed);
+
+            return new NoContentResult();
+        }
     }
 }

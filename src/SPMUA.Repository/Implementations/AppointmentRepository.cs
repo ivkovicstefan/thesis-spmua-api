@@ -161,5 +161,31 @@ namespace SPMUA.Repository.Implementations
 
             return result;
         }
+
+        public async Task UpdateAppointmentStatusAsync(int appointmentId, int appointmentStatusId)
+        {
+            try
+            {
+                Appointment? appointment = _spmuaDbContext.Appointments.Where(a => a.AppointmentId == appointmentId)
+                                                                       .AsTracking()
+                                                                       .FirstOrDefault();                                      
+
+                if (appointment is not null)
+                {
+                    appointment.AppointmentStatusId = appointmentStatusId;
+                    appointment.LastModifiedDate = DateTime.Now;
+
+                    await _spmuaDbContext.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new EntityNotFoundException();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

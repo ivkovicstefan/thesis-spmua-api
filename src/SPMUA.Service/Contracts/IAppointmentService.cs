@@ -14,5 +14,9 @@ namespace SPMUA.Service.Contracts
         Task<List<DateOnly>> GetUnavailableAppointmentDatesForAsync(DateTime fromDate, DateTime toDate, int serviceTypeId);
 
         Task<List<TimeOnly>> GetAvailableAppointmentHoursForAsync(DateTime date,  int serviceTypeId);
+
+        Task<string> GetAppointmentmentStatusByIdAsync(int appointmentId);
+
+        Task UpdateAppointmentStatusAsync(int appointmentId, bool isAppointmentConfirmed);
     }
 }
