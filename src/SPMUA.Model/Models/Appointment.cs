@@ -18,6 +18,8 @@ namespace SPMUA.Model.Models
         public DateTime AppointmentDate { get; set; }
         public int ServiceTypeId { get; set; }
         public int AppointmentStatusId { get; set; }
+        [MaxLength(200)]
+        public string? ResponseComment { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsDeleted { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

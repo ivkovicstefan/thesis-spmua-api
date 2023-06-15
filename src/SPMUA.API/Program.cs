@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SPMUA.API.Middlewares;
+using SPMUA.Model.Queues;
 using SPMUA.Repository.Contracts;
 using SPMUA.Repository.Data;
 using SPMUA.Repository.Implementations;
@@ -26,6 +27,9 @@ builder.Services.AddScoped<IServiceTypeService, ServiceTypeService>();
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddSingleton<IEmailRepository, EmailRepository>();
+builder.Services.AddSingleton<EmailQueue>();
+builder.Services.AddHostedService<EmailService>();
 
 var app = builder.Build();
 

@@ -17,6 +17,6 @@ namespace SPMUA.Service.Contracts
 
         Task<string> GetAppointmentmentStatusByIdAsync(int appointmentId);
 
-        Task UpdateAppointmentStatusAsync(int appointmentId, bool isAppointmentConfirmed);
+        Task UpdateAppointmentStatusAsync(UpdateAppointmentStatusDTO updateAppointmentStatusDTO);
     }
 }

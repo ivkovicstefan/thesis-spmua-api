@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,9 +22,28 @@ namespace SPMUA.Utility.Helpers
             return time;
         }
 
-        public static TimeInterval CreateAppointmentTimeInterval(TimeOnly time, int duration)
+        public static TimeInterval CreateAppointmentTimeInterval(TimeOnly time, int duration, bool isRoundToNextHourEnabled = true)
         {
-            return new TimeInterval(time, RoundToNextHour(time.AddMinutes(duration)));
+            return new TimeInterval(time, isRoundToNextHourEnabled ? RoundToNextHour(time.AddMinutes(duration)) 
+                                                                   : time.AddMinutes(duration));
+        }
+
+        public static string ReplaceTemplateWithParamData<T> (string template, T paramData) 
+        {
+            Type dataType = typeof (T);
+
+            PropertyInfo[] properties = dataType.GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                string propertyName = property.Name;
+                string propertyValue = property.GetValue(paramData)?.ToString();
+
+                string placeholder = $"{{{{{propertyName}}}}}";
+                template = template.Replace(placeholder, propertyValue);
+            }
+
+            return template;
         }
     }
 }

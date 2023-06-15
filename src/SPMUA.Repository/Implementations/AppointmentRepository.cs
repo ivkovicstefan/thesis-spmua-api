@@ -7,6 +7,7 @@ using SPMUA.Model.Models;
 using SPMUA.Repository.Contracts;
 using SPMUA.Repository.Data;
 using SPMUA.Utility.Helpers;
+using TinyHelpers.Extensions;
 
 namespace SPMUA.Repository.Implementations
 {
@@ -130,7 +131,8 @@ namespace SPMUA.Repository.Implementations
                                                                     && a.AppointmentStatusId != (int)AppointmentStatusEnum.Rejected)
                                                            .OrderBy(a => a.AppointmentDate)
                                                            .Select(a => Helper.CreateAppointmentTimeInterval(TimeOnly.FromDateTime(a.AppointmentDate),
-                                                                                                             a.ServiceType.ServiceTypeDuration))
+                                                                                                             a.ServiceType.ServiceTypeDuration, 
+                                                                                                             false))
                                                            .ToListAsync();
             }
             catch
@@ -162,7 +164,7 @@ namespace SPMUA.Repository.Implementations
             return result;
         }
 
-        public async Task UpdateAppointmentStatusAsync(int appointmentId, int appointmentStatusId)
+        public async Task UpdateAppointmentStatusAsync(int appointmentId, int appointmentStatusId, string? responseComment)
         {
             try
             {
@@ -174,6 +176,7 @@ namespace SPMUA.Repository.Implementations
                 {
                     appointment.AppointmentStatusId = appointmentStatusId;
                     appointment.LastModifiedDate = DateTime.Now;
+                    appointment.ResponseComment = responseComment;
 
                     await _spmuaDbContext.SaveChangesAsync();
                 }
@@ -186,6 +189,24 @@ namespace SPMUA.Repository.Implementations
             {
                 throw;
             }
+        }
+
+        public async Task<string> GetAppointmentCustomerEmail(int appointmentId)
+        {
+            string result;
+
+            try
+            {
+                result = await _spmuaDbContext.Appointments.Where(a => a.AppointmentId == appointmentId)
+                                                           .Select(a => a.CustomerEmail ?? String.Empty)
+                                                           .FirstAsync();
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
         }
     }
 }

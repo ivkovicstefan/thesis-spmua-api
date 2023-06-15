@@ -16,6 +16,8 @@ namespace SPMUA.Repository.Contracts
 
         Task<List<DateOnly>> GetDatesWithAppointmentsAsync(DateTime fromDate, DateTime toDate);
 
-        Task UpdateAppointmentStatusAsync(int appointmentId, int appointmentStatusId);
+        Task UpdateAppointmentStatusAsync(int appointmentId, int appointmentStatusId, string? responseComment);
+
+        Task<string> GetAppointmentCustomerEmail(int appointmentId);
     }
 }

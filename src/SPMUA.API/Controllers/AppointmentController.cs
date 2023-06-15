@@ -78,13 +78,12 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _appointmentService.GetAppointmentmentStatusByIdAsync(appointmentId));
         }
 
-        [HttpPatch("appointment/{appointmentId}/status")]
+        [HttpPatch("appointment/status")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateAppointmentStatusAsync([FromRoute] int appointmentId,
-                                                                      [FromQuery] bool isAppointmentConfirmed)
+        public async Task<IActionResult> UpdateAppointmentStatusAsync(UpdateAppointmentStatusDTO updateAppointmentStatusDTO)
         {
-            await _appointmentService.UpdateAppointmentStatusAsync(appointmentId, isAppointmentConfirmed);
+            await _appointmentService.UpdateAppointmentStatusAsync(updateAppointmentStatusDTO);
 
             return new NoContentResult();
         }

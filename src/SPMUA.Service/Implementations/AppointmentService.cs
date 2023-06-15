@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SPMUA.Model.Commons;
+﻿using SPMUA.Model.Commons;
 using SPMUA.Model.Dictionaries.Appointment;
+using SPMUA.Model.Dictionaries.EmailTemplate;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.DTOs.ServiceType;
 using SPMUA.Model.Exceptions;
+using SPMUA.Model.Queues;
 using SPMUA.Repository.Contracts;
 using SPMUA.Service.Contracts;
 using SPMUA.Service.Validators;
@@ -17,14 +18,17 @@ namespace SPMUA.Service.Implementations
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IWorkingDayRepository _workingDayRepository;
         private readonly IServiceTypeRepository _serviceTypeRepository;
+        private readonly EmailQueue _emailQueue;
 
         public AppointmentService(IAppointmentRepository appointmentRepository,
                                   IWorkingDayRepository workingDayRepository,
-                                  IServiceTypeRepository serviceTypeRepository)
+                                  IServiceTypeRepository serviceTypeRepository,
+                                  EmailQueue emailQueue)
         {
             _appointmentRepository = appointmentRepository;
             _workingDayRepository = workingDayRepository;
             _serviceTypeRepository = serviceTypeRepository;
+            _emailQueue = emailQueue;
         }
 
         public async Task<List<AppointmentDTO>> GetAllAppointmentsAsync()
@@ -39,9 +43,9 @@ namespace SPMUA.Service.Implementations
 
         public async Task<int> CreateAppointmentAsync(AppointmentDTO appointmentDTO)
         {
-            RequestValidator<AppointmentDTOValidator, AppointmentDTO> validator = new();
-
             int result;
+
+            RequestValidator<AppointmentDTOValidator, AppointmentDTO> validator = new();
 
             validator.Validate(appointmentDTO);
 
@@ -54,9 +58,25 @@ namespace SPMUA.Service.Implementations
                 throw new RequestValidationException("Appointment date is not available anymore.", null);
             }
 
-            // TODO: Send appointment confirmation pending email to client
+            if (!String.IsNullOrEmpty(appointmentDTO.CustomerEmail))
+            {
+                EmailQueueItem clientEmailQueueItem = new()
+                {
+                    EmailTemplateId = (int)EmailTemplateEnum.AppointmentRequestConfirmationPending,
+                    EntityId = result,
+                    ToClientEmail = appointmentDTO.CustomerEmail
+                };
 
-            // TODO: Send appointment confirmation pending email to admin
+                _emailQueue.Enqueue(clientEmailQueueItem);
+            }
+
+            EmailQueueItem adminEmailQueueItem = new()
+            {
+                EmailTemplateId = (int)EmailTemplateEnum.AppointmentRequestArrived,
+                EntityId = result
+            };
+
+            _emailQueue.Enqueue(adminEmailQueueItem);
 
             return result;
         }
@@ -202,21 +222,34 @@ namespace SPMUA.Service.Implementations
             return result;
         }
 
-        public async Task UpdateAppointmentStatusAsync(int appointmentId, bool isAppointmentConfirmed)
+        public async Task UpdateAppointmentStatusAsync(UpdateAppointmentStatusDTO updateAppointmentStatusDTO)
         {
-            if (isAppointmentConfirmed)
+            if (updateAppointmentStatusDTO.IsAppointmentConfirmed)
             {
-                await _appointmentRepository.UpdateAppointmentStatusAsync(appointmentId, 
-                                                                          (int)AppointmentStatusEnum.Confirmed);
-
-                // TODO: Send appointment confirmation email to client
+                await _appointmentRepository.UpdateAppointmentStatusAsync(updateAppointmentStatusDTO.AppointmentId, 
+                                                                          (int)AppointmentStatusEnum.Confirmed,
+                                                                          updateAppointmentStatusDTO.ResponseComment);
             }
             else
             {
-                await _appointmentRepository.UpdateAppointmentStatusAsync(appointmentId, 
-                                                                          (int)AppointmentStatusEnum.Rejected);
+                await _appointmentRepository.UpdateAppointmentStatusAsync(updateAppointmentStatusDTO.AppointmentId, 
+                                                                          (int)AppointmentStatusEnum.Rejected,
+                                                                          updateAppointmentStatusDTO.ResponseComment);
+            }
 
-                // TODO: Send appointment rejection email to client
+            string clientEmail = await _appointmentRepository.GetAppointmentCustomerEmail(updateAppointmentStatusDTO.AppointmentId);
+
+            if (!String.IsNullOrEmpty(clientEmail))
+            {
+                EmailQueueItem clientEmailQueueItem = new()
+                {
+                    EntityId = updateAppointmentStatusDTO.AppointmentId,
+                    EmailTemplateId = updateAppointmentStatusDTO.IsAppointmentConfirmed ? (int)EmailTemplateEnum.AppointmentRequestConfirmed
+                                                                                        : (int)EmailTemplateEnum.AppointmentRequestRejected,
+                    ToClientEmail = clientEmail
+                };
+
+                _emailQueue.Enqueue(clientEmailQueueItem);
             }
         }
 

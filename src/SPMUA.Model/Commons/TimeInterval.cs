@@ -20,5 +20,10 @@ namespace SPMUA.Model.Commons
 
         public TimeOnly StartingTime { get; set; }
         public TimeOnly EndingTime { get; set; }
+
+        public override string ToString()
+        {
+            return String.Concat(StartingTime.ToString("HH:mm"), " - ", EndingTime.ToString("HH:mm"));
+        }
     }
 }
