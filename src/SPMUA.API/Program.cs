@@ -27,6 +27,8 @@ builder.Services.AddScoped<IServiceTypeService, ServiceTypeService>();
 builder.Services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IVacationService, VacationService>();
+builder.Services.AddScoped<IVacationRepository, VacationRepository>();
 builder.Services.AddSingleton<IEmailRepository, EmailRepository>();
 builder.Services.AddSingleton<EmailQueue>();
 builder.Services.AddHostedService<EmailService>();

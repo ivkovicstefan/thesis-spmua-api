@@ -8,8 +8,8 @@ namespace SPMUA.Model.Models
         public int VacationId { get; set; }
         [MaxLength(20)]
         public string VacationName { get; set; } = null!;
-        public DateTime VacationStartDate { get; set; }
-        public DateTime VacationEndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedDate { get; set; }
     }
