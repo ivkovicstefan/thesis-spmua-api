@@ -19,5 +19,6 @@ namespace SPMUA.Repository.Contracts
 
         Task DeleteVacationAsync(int vacationId);
 
+        Task<bool> IsDateOverlappingWithVacationAsync(DateTime date);
     }
 }

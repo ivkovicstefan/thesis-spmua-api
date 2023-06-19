@@ -3,6 +3,7 @@ using SPMUA.Model.Dictionaries.Appointment;
 using SPMUA.Model.Dictionaries.EmailTemplate;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.DTOs.ServiceType;
+using SPMUA.Model.DTOs.Vacation;
 using SPMUA.Model.Exceptions;
 using SPMUA.Model.Queues;
 using SPMUA.Repository.Contracts;
@@ -18,16 +19,19 @@ namespace SPMUA.Service.Implementations
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IWorkingDayRepository _workingDayRepository;
         private readonly IServiceTypeRepository _serviceTypeRepository;
+        private readonly IVacationRepository _vacationRepository;
         private readonly EmailQueue _emailQueue;
 
         public AppointmentService(IAppointmentRepository appointmentRepository,
                                   IWorkingDayRepository workingDayRepository,
                                   IServiceTypeRepository serviceTypeRepository,
+                                  IVacationRepository vacationRepository,
                                   EmailQueue emailQueue)
         {
             _appointmentRepository = appointmentRepository;
             _workingDayRepository = workingDayRepository;
             _serviceTypeRepository = serviceTypeRepository;
+            _vacationRepository = vacationRepository;
             _emailQueue = emailQueue;
         }
 
@@ -88,6 +92,10 @@ namespace SPMUA.Service.Implementations
             List<DateOnly> distinctAppointmentDates =
                 await _appointmentRepository.GetDatesWithAppointmentsAsync(fromDate, toDate);
 
+            List<VacationDTO> vacations = await _vacationRepository.GetAllVacationsAsync();
+
+            // Get days populated with appointments
+
             foreach (var appointmentDate in distinctAppointmentDates)
             {
                 if (!await IsAppointmentDateAvailableForAsync(serviceTypeId, appointmentDate))
@@ -96,11 +104,28 @@ namespace SPMUA.Service.Implementations
                 }
             }
 
+            // Get vacation days
+
+            foreach (var vacation in vacations)
+            {
+                for (var day = vacation.StartDate; day <= vacation.EndDate; day = day.AddDays(1))
+                {
+                    result.Add(DateOnly.FromDateTime(day));
+                }
+            }
+
             return result;
         }
 
         private async Task<bool> IsAppointmentDateTimeAvailableForAsync(int serviceTypeId, DateTime date)
         {
+            // Check if the date is overlapping with vacations
+
+            if (await _vacationRepository.IsDateOverlappingWithVacationAsync(date))
+            {
+                return false;
+            }
+
             (TimeOnly? openingTime, TimeOnly? closingTime) 
                 = await _workingDayRepository.GetWorkingHoursForAsync(date);
 
@@ -140,6 +165,13 @@ namespace SPMUA.Service.Implementations
 
         private async Task<bool> IsAppointmentDateAvailableForAsync(int serviceTypeId, DateOnly date)
         {
+            // Check if the date is overlapping with vacations
+
+            if (await _vacationRepository.IsDateOverlappingWithVacationAsync(Convert.ToDateTime(date)))
+            {
+                return false;
+            }
+
             DateTime potentialBookedDate = date.ToDateTime(TimeOnly.MinValue);
 
             (TimeOnly? openingTime, TimeOnly? closingTime)
@@ -189,6 +221,11 @@ namespace SPMUA.Service.Implementations
         public async Task<List<TimeOnly>> GetAvailableAppointmentHoursForAsync(DateTime date, int serviceTypeId)
         {
             List<TimeOnly> result = new();
+
+            if (await _vacationRepository.IsDateOverlappingWithVacationAsync(date))
+            {
+                return result;
+            }
 
             (TimeOnly? openingTime, TimeOnly? closingTime)
                 = await _workingDayRepository.GetWorkingHoursForAsync(date);

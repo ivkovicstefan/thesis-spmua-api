@@ -145,5 +145,24 @@ namespace SPMUA.Repository.Implementations
                 throw;
             }
         }
+
+        public async Task<bool> IsDateOverlappingWithVacationAsync(DateTime date)
+        {
+            bool result = false;
+
+            try
+            {
+                Vacation? conflictingVacation = await _spmuaDbContext.Vacations.Where(v => v.StartDate <= date && v.EndDate >= date)
+                                                                               .FirstOrDefaultAsync();
+
+                result = conflictingVacation is not null;
+            }
+            catch
+            {
+                throw;
+            }
+
+            return result;
+        }
     }
 }
