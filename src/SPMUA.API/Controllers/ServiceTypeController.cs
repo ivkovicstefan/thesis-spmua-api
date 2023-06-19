@@ -39,7 +39,7 @@ namespace SPMUA.API.Controllers
         }
 
         [HttpPost("service-type")]
-        [ProducesResponseType(typeof(ServiceTypeDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateServiceTypeAsync([FromBody] ServiceTypeDTO serviceTypeDTO)
         {
