@@ -58,7 +58,7 @@ namespace SPMUA.Repository.Implementations
 
                 if (result is null)
                 {
-                    throw new EntityNotFoundException();
+                    throw new EntityNotFoundException(vacationId);
                 }
             }
             catch
@@ -113,7 +113,7 @@ namespace SPMUA.Repository.Implementations
                 }
                 else
                 {
-                    throw new EntityNotFoundException();
+                    throw new EntityNotFoundException(vacationDTO.VacationId);
                 }
             }
             catch
@@ -137,7 +137,7 @@ namespace SPMUA.Repository.Implementations
                 }
                 else
                 {
-                    throw new EntityNotFoundException();
+                    throw new EntityNotFoundException(vacationId);
                 }
             }
             catch

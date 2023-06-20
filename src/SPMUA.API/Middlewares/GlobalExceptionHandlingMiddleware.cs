@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SPMUA.Model.Commons.ErrorHandling;
+using SPMUA.Model.Dictionaries.Commons;
 using SPMUA.Model.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
@@ -17,40 +19,38 @@ namespace SPMUA.API.Middlewares
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-				var details = new
+				ErrorDetails errorDetails = new()
 				{
-					Title = "Validation Error",
-					Errors = ex.Errors,
-					Message = ex.Message
+					Title = ErrorDetailsMesssage.ValidationErrorTitle,
+					Description = ErrorDetailsMesssage.ValidationErrorDescription,
+					Errors = ex.Errors
 				};
 
-                await context.Response.WriteAsJsonAsync(details);
+                await context.Response.WriteAsJsonAsync(errorDetails);
             }
-			catch (EntityNotFoundException)
+			catch (EntityNotFoundException ex)
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.NotFound;
 
-				ProblemDetails details = new()
+				ErrorDetails errorDetails = new()
 				{
-					Type = "Not found error",
-					Title = "Resource Not Found",
-					Detail = "Resource that you are looking for is not found."
+					Title = ErrorDetailsMesssage.EntityNotFoundErrorTitle,
+					Description = String.Format(ErrorDetailsMesssage.EntityNotFoundErrorDescription, ex.EntityId)
 				};
 
-				await context.Response.WriteAsJsonAsync(details);
+                await context.Response.WriteAsJsonAsync(errorDetails);
 			}
             catch (Exception)
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-				ProblemDetails details = new()
+				ErrorDetails errorDetails = new()
 				{
-					Type = "Server error",
-					Title = "Internal Server Error",
-					Detail = "An error occurred while processing the request."
+					Title = ErrorDetailsMesssage.InternalServerErrorTitle,
+					Description = ErrorDetailsMesssage.InternalServerErrorDescription
 				};
 
-				await context.Response.WriteAsJsonAsync<ProblemDetails>(details);
+                await context.Response.WriteAsJsonAsync(errorDetails);
 			}
         }
     }

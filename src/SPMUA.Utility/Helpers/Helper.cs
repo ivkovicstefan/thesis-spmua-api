@@ -1,4 +1,4 @@
-﻿using SPMUA.Model.Commons;
+﻿using SPMUA.Model.Commons.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

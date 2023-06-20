@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SPMUA.Model.Commons
+namespace SPMUA.Model.Commons.DataTypes
 {
     public struct TimeInterval
     {
         public TimeInterval()
         {
-            
+
         }
         public TimeInterval(TimeOnly startingTime, TimeOnly endingTime)
         {
@@ -23,7 +23,7 @@ namespace SPMUA.Model.Commons
 
         public override string ToString()
         {
-            return String.Concat(StartingTime.ToString("HH:mm"), " - ", EndingTime.ToString("HH:mm"));
+            return string.Concat(StartingTime.ToString("HH:mm"), " - ", EndingTime.ToString("HH:mm"));
         }
     }
 }

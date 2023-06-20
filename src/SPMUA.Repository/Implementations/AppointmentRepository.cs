@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SPMUA.Model.Commons;
+using SPMUA.Model.Commons.DataTypes;
 using SPMUA.Model.Dictionaries.Appointment;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.Exceptions;
@@ -80,7 +80,7 @@ namespace SPMUA.Repository.Implementations
 
                 if (result is null)
                 {
-                    throw new EntityNotFoundException();
+                    throw new EntityNotFoundException(appointmentId);
                 }
             }
             catch
@@ -182,7 +182,7 @@ namespace SPMUA.Repository.Implementations
                 }
                 else
                 {
-                    throw new EntityNotFoundException();
+                    throw new EntityNotFoundException(appointmentId);
                 }
             }
             catch

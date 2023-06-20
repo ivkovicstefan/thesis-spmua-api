@@ -1,4 +1,4 @@
-﻿using SPMUA.Model.Commons;
+﻿using SPMUA.Model.Commons.DataTypes;
 using SPMUA.Model.Dictionaries.Appointment;
 using SPMUA.Model.Dictionaries.EmailTemplate;
 using SPMUA.Model.DTOs.Appointment;

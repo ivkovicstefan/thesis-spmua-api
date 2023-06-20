@@ -1,4 +1,4 @@
-﻿using SPMUA.Model.Commons;
+﻿using SPMUA.Model.Commons.DataTypes;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.Models;
 

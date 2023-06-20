@@ -5,7 +5,7 @@ using SPMUA.Model.Exceptions;
 namespace SPMUA.Service.Validators
 {
     public class RequestValidator<TValidator, TRequest> 
-        where TValidator : AbstractValidator<TRequest>, new() 
+        where TValidator : AbstractValidator<TRequest>, new()
         where TRequest: class
     {
 
