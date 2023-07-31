@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Service.Contracts;
 
@@ -15,6 +16,7 @@ namespace SPMUA.API.Controllers
             _appointmentService = appointmentService;
         }
 
+        [AllowAnonymous]
         [HttpGet("ping")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Ping()
@@ -22,6 +24,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult("pong");
         }
 
+        [Authorize]
         [HttpGet("appointments")]
         [ProducesResponseType(typeof(List<AppointmentDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAppointmentsAsync()
@@ -29,6 +32,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _appointmentService.GetAllAppointmentsAsync());
         }
 
+        [AllowAnonymous]
         [HttpGet("appointment/{appointmentId}")]
         [ProducesResponseType(typeof(AppointmentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -37,6 +41,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _appointmentService.GetAppointmentByIdAsync(appointmentId));
         }
 
+        [AllowAnonymous]
         [HttpPost("appointment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,6 +55,7 @@ namespace SPMUA.API.Controllers
                                              null);
         }
 
+        [AllowAnonymous]
         [HttpGet("unavailable-dates")]
         [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUnavailableAppointmentDatesAsync([FromQuery] DateTime fromDate,
@@ -61,6 +67,7 @@ namespace SPMUA.API.Controllers
                                                                                                        serviceTypeId));
         }
 
+        [AllowAnonymous]
         [HttpGet("available-hours")]
         [ProducesResponseType(typeof(TimeOnly), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAvailableAppointmentHoursAsync([FromQuery] DateTime date, 
@@ -70,6 +77,7 @@ namespace SPMUA.API.Controllers
                                                                                                      serviceTypeId));
         }
 
+        [AllowAnonymous]
         [HttpGet("appointment/{appointmentId}/status")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,6 +86,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _appointmentService.GetAppointmentmentStatusByIdAsync(appointmentId));
         }
 
+        [Authorize]
         [HttpPatch("appointment/status")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

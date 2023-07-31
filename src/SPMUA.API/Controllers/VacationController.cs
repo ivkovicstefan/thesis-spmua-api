@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.DTOs.Vacation;
@@ -18,6 +19,7 @@ namespace SPMUA.API.Controllers
             _vacationService = vacationService;
         }
 
+        [AllowAnonymous]
         [HttpGet("ping")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Ping()
@@ -25,6 +27,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult("pong");
         }
 
+        [Authorize]
         [HttpGet("vacations")]
         [ProducesResponseType(typeof(List<VacationDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllVacationsAsync()
@@ -32,6 +35,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _vacationService.GetAllVacationsAsync());
         }
 
+        [Authorize]
         [HttpGet("vacations/{vacationId}")]
         [ProducesResponseType(typeof(VacationDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -40,6 +44,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _vacationService.GetVacationByIdAsync(vacationId));
         }
 
+        [Authorize]
         [HttpPost("vacation")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,6 +58,7 @@ namespace SPMUA.API.Controllers
                                              null);
         }
 
+        [Authorize]
         [HttpPut("vacation")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,6 +70,7 @@ namespace SPMUA.API.Controllers
             return new NoContentResult();
         }
 
+        [Authorize]
         [HttpDelete("vacation/{vacationId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -12,6 +12,8 @@ namespace SPMUA.Repository.Data
         {
       
         }
+
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatuses { get; set;}
         public DbSet<EmailTemplate> EmailTemplates { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPMUA.Model.DTOs.ServiceType;
 using SPMUA.Service.Contracts;
@@ -16,6 +17,7 @@ namespace SPMUA.API.Controllers
             _serviceTypeService = serviceTypeService;
         }
 
+        [AllowAnonymous]
         [HttpGet("ping")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Ping()
@@ -23,6 +25,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult("pong");
         }
 
+        [AllowAnonymous]
         [HttpGet("service-types")]
         [ProducesResponseType(typeof(List<ServiceTypeDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllServiceTypesAsync()
@@ -30,6 +33,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _serviceTypeService.GetAllServiceTypesAsync());
         }
 
+        [Authorize]
         [HttpGet("service-types/{serviceTypeId}")]
         [ProducesResponseType(typeof(ServiceTypeDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,6 +42,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _serviceTypeService.GetServiceTypeByIdAsync(serviceTypeId));
         }
 
+        [Authorize]
         [HttpPost("service-type")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -51,6 +56,7 @@ namespace SPMUA.API.Controllers
                                              null);
         }
 
+        [Authorize]
         [HttpPut("service-type")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,6 +68,7 @@ namespace SPMUA.API.Controllers
             return new NoContentResult();
         }
 
+        [Authorize]
         [HttpDelete("service-type/{serviceTypeId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

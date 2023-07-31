@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPMUA.Model.DTOs.WorkingDay;
 using SPMUA.Service.Contracts;
@@ -17,6 +18,7 @@ namespace SPMUA.API.Controllers
             _workingDayService = workingDayService;
         }
 
+        [AllowAnonymous]
         [HttpGet("ping")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Ping()
@@ -24,6 +26,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult("pong");
         }
 
+        [AllowAnonymous]
         [HttpGet("working-days")]
         [ProducesResponseType(typeof(List<WorkingDayDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllWorkingDaysAsync() 
@@ -31,6 +34,7 @@ namespace SPMUA.API.Controllers
             return new OkObjectResult(await _workingDayService.GetAllWorkingDaysAsync());
         }
 
+        [Authorize]
         [HttpPut("working-days")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -21,33 +21,45 @@ namespace SPMUA.API.Middlewares
 
 				ErrorDetails errorDetails = new()
 				{
-					Title = ErrorDetailsMesssage.ValidationErrorTitle,
-					Description = ErrorDetailsMesssage.ValidationErrorDescription,
+					Title = ErrorDetailsMessage.ValidationErrorTitle,
+					Description = ErrorDetailsMessage.ValidationErrorDescription,
 					Errors = ex.Errors
 				};
 
                 await context.Response.WriteAsJsonAsync(errorDetails);
             }
+			catch (InvalidCredentialsException)
+			{
+				context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+
+				ErrorDetails errorDetails = new()
+				{
+					Title = ErrorDetailsMessage.InvalidCredentialsErrorTitle,
+					Description = ErrorDetailsMessage.InvalidCredentialsErrorDesciption
+				};
+
+				await context.Response.WriteAsJsonAsync(errorDetails);
+			}
 			catch (EntityNotFoundException ex)
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.NotFound;
 
 				ErrorDetails errorDetails = new()
 				{
-					Title = ErrorDetailsMesssage.EntityNotFoundErrorTitle,
-					Description = String.Format(ErrorDetailsMesssage.EntityNotFoundErrorDescription, ex.EntityId)
+					Title = ErrorDetailsMessage.EntityNotFoundErrorTitle,
+					Description = String.Format(ErrorDetailsMessage.EntityNotFoundErrorDescription, ex.EntityId)
 				};
 
                 await context.Response.WriteAsJsonAsync(errorDetails);
 			}
-            catch (Exception)
+            catch (Exception ex)
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
 				ErrorDetails errorDetails = new()
 				{
-					Title = ErrorDetailsMesssage.InternalServerErrorTitle,
-					Description = ErrorDetailsMesssage.InternalServerErrorDescription
+					Title = ErrorDetailsMessage.InternalServerErrorTitle,
+					Description = ErrorDetailsMessage.InternalServerErrorDescription
 				};
 
                 await context.Response.WriteAsJsonAsync(errorDetails);
