@@ -16,6 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(p => p.AddPolicy("AllowWebApp", options =>
+{
+    options.WithOrigins("http://localhost:5173")
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
 builder.Services.AddEndpointsApiExplorer();
@@ -94,6 +100,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowWebApp");
 app.UseAuthentication();
 app.UseAuthorization();
 
