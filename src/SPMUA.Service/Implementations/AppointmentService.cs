@@ -167,7 +167,7 @@ namespace SPMUA.Service.Implementations
         {
             // Check if the date is overlapping with vacations
 
-            if (await _vacationRepository.IsDateOverlappingWithVacationAsync(Convert.ToDateTime(date)))
+            if (await _vacationRepository.IsDateOverlappingWithVacationAsync(date.ToDateTime(new TimeOnly(0, 0))))
             {
                 return false;
             }
@@ -200,7 +200,7 @@ namespace SPMUA.Service.Implementations
                 else
                 {
                     potentialFreeInterval 
-                        = Helper.CreateAppointmentTimeInterval(bookedInterval.EndingTime, requestedServiceType.ServiceTypeDuration);
+                        = Helper.CreateAppointmentTimeInterval(Helper.RoundToNextHour(bookedInterval.EndingTime), requestedServiceType.ServiceTypeDuration, true);
                 }
             }
 
