@@ -52,7 +52,7 @@ namespace SPMUA.API.Controllers
             return new CreatedAtActionResult(nameof(GetAppointmentByIdAsync),
                                              nameof(AppointmentController).Replace("Controller", ""),
                                              new { appointmentId = result },
-                                             null);
+                                             result);
         }
 
         [AllowAnonymous]
