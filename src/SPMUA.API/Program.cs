@@ -20,7 +20,8 @@ builder.Services.AddCors(p => p.AddPolicy("AllowWebApp", options =>
 {
     options.WithOrigins("http://localhost:5173")
            .AllowAnyMethod()
-           .AllowAnyHeader();
+           .AllowAnyHeader()
+           .WithExposedHeaders("*");
 }));
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
