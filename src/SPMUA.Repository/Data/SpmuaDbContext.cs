@@ -32,13 +32,13 @@ namespace SPMUA.Repository.Data
             });
 
             modelBuilder.Entity<WorkingDay>()
-                        .HasData(new WorkingDay { WorkingDayId = 1, WorkingDayName = "Monday", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
-                                 new WorkingDay { WorkingDayId = 2, WorkingDayName = "Tuesday", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
-                                 new WorkingDay { WorkingDayId = 3, WorkingDayName = "Wednesday", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
-                                 new WorkingDay { WorkingDayId = 4, WorkingDayName = "Thursday", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
-                                 new WorkingDay { WorkingDayId = 5, WorkingDayName = "Friday", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
-                                 new WorkingDay { WorkingDayId = 6, WorkingDayName = "Saturday", StartTime = TimeOnly.Parse("07:00:00"), EndTime = TimeOnly.Parse("18:00:00") },
-                                 new WorkingDay { WorkingDayId = 7, WorkingDayName = "Sunday", StartTime = TimeOnly.Parse("07:00:00"), EndTime = TimeOnly.Parse("18:00:00") });
+                        .HasData(new WorkingDay { WorkingDayId = 1, WorkingDayName = "Ponedeljak", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
+                                 new WorkingDay { WorkingDayId = 2, WorkingDayName = "Utorak", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
+                                 new WorkingDay { WorkingDayId = 3, WorkingDayName = "Sreda", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
+                                 new WorkingDay { WorkingDayId = 4, WorkingDayName = "Četvrtak", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
+                                 new WorkingDay { WorkingDayId = 5, WorkingDayName = "Petak", StartTime = TimeOnly.Parse("10:00:00"), EndTime = TimeOnly.Parse("16:00:00") },
+                                 new WorkingDay { WorkingDayId = 6, WorkingDayName = "Subota", StartTime = TimeOnly.Parse("07:00:00"), EndTime = TimeOnly.Parse("18:00:00") },
+                                 new WorkingDay { WorkingDayId = 7, WorkingDayName = "Nedelja", StartTime = TimeOnly.Parse("07:00:00"), EndTime = TimeOnly.Parse("18:00:00") });
 
             modelBuilder.Entity<AppointmentStatus>()
                         .HasData(new AppointmentStatus { AppointmentStatusId = 1, AppointmentStatusName = "Confirmation Pending" },
