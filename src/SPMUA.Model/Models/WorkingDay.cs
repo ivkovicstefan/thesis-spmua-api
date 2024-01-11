@@ -7,7 +7,7 @@ namespace SPMUA.Model.Models
     public class WorkingDay
     {
         public int WorkingDayId { get; set; }
-        [MaxLength(9)]
+        [MaxLength(10)]
         public string WorkingDayName { get; set; } = null!;
         public TimeOnly? StartTime { get; set; }
         public TimeOnly? EndTime { get; set; }
