@@ -45,5 +45,10 @@ namespace SPMUA.Utility.Helpers
 
             return template;
         }
+
+        public static int ToNormalizedWeekDayIndex(int weekDayIndex)
+        {
+            return weekDayIndex == 0 ? 7 : weekDayIndex;
+        }
     }
 }

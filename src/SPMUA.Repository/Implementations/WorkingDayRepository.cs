@@ -3,6 +3,7 @@ using SPMUA.Model.DTOs.WorkingDay;
 using SPMUA.Model.Models;
 using SPMUA.Repository.Contracts;
 using SPMUA.Repository.Data;
+using SPMUA.Utility.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,9 +78,9 @@ namespace SPMUA.Repository.Implementations
 
             try
             {
-                string dayName = date.DayOfWeek.ToString();
+                int dayWeekIndex = Helper.ToNormalizedWeekDayIndex((int)date.DayOfWeek);
 
-                result = await _spmuaDbContext.WorkingDays.Where(wd => wd.WorkingDayName.ToLower() == dayName.ToLower())
+                result = await _spmuaDbContext.WorkingDays.Where(wd => wd.WorkingDayId == dayWeekIndex)
                                                           .Select(wd => ValueTuple.Create(wd.StartTime, wd.EndTime))
                                                           .FirstOrDefaultAsync();
             }
