@@ -13,7 +13,7 @@ namespace SPMUA.Service.Validators.WorkingDay
         public WorkingDayDTOValidator()
         {
             RuleFor(wd => wd.WorkingDayName).NotEmpty()
-                                            .MaximumLength(9);
+                                            .MaximumLength(10);
 
             RuleFor(wd => wd.StartTime).NotNull()
                                        .When(wd => wd.IsActive);
