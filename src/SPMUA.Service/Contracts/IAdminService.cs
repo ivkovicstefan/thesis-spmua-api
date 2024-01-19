@@ -13,7 +13,7 @@ namespace SPMUA.Service.Contracts
 
         Task<bool> IsAdminEmailAvailableAsync(string adminEmail);
 
-        Task<string> LoginAsync(AdminLoginDTO adminLoginDTO);
+        Task<AdminLoginResponseDTO> LoginAsync(AdminLoginDTO adminLoginDTO);
 
         Task<AdminDTO> GetAdminByIdAsync(int adminId);
     }

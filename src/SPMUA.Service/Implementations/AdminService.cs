@@ -47,13 +47,18 @@ namespace SPMUA.Service.Implementations
             return await _adminRepository.IsAdminEmailAvailableAsync(adminEmail);
         }
 
-        public async Task<string> LoginAsync(AdminLoginDTO adminLoginDTO)
+        public async Task<AdminLoginResponseDTO> LoginAsync(AdminLoginDTO adminLoginDTO)
         {
-            string result;
+            AdminLoginResponseDTO result = new();
 
             int adminId = await _adminRepository.AuthenticateAdminAsync(adminLoginDTO);
 
-            result = _authenticationService.GenerateToken(adminId);
+            result.Token = _authenticationService.GenerateToken(adminId);
+
+            AdminDTO adminDetails = await _adminRepository.GetAdminByIdAsync(adminId);
+
+            result.AdminFirstName = adminDetails.AdminFirstName;
+            result.AdminLastName = adminDetails.AdminLastName;
 
             return result;
         }
