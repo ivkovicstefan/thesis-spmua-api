@@ -9,7 +9,6 @@ namespace SPMUA.Model.Models
         public int ServiceTypeId { get; set; }
         [MaxLength(50)]
         public string ServiceTypeName { get; set; } = null!;
-        public decimal ServiceTypePrice { get; set; }
         public int ServiceTypeDuration { get; set; }
         public bool IsAvailableOnMonday { get; set; }
         public bool IsAvailableOnTuesday { get; set; }
@@ -25,5 +24,6 @@ namespace SPMUA.Model.Models
         public DateTime? LastModifiedDate { get; set; }
 
         public virtual ICollection<Appointment> Appointment { get; } = new List<Appointment>();
+        public virtual ICollection<ServiceTypePriceHistory> ServiceTypePriceHistories { get; } = new List<ServiceTypePriceHistory>();
     }
 }

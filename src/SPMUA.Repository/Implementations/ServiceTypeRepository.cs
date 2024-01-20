@@ -22,22 +22,25 @@ namespace SPMUA.Repository.Implementations
 
             try
             {
-                result = await _spmuaDbContext.ServiceTypes.Where(st => st.IsActive && !st.IsDeleted)
-                                                           .Select(st => new ServiceTypeDTO()
-                                                           {
-                                                               ServiceTypeId = st.ServiceTypeId,
-                                                               ServiceTypeName = st.ServiceTypeName,
-                                                               ServiceTypePrice = st.ServiceTypePrice,
-                                                               ServiceTypeDuration = st.ServiceTypeDuration,
-                                                               IsAvailableOnMonday = st.IsAvailableOnMonday,
-                                                               IsAvailableOnTuesday = st.IsAvailableOnTuesday,
-                                                               IsAvailableOnWednesday = st.IsAvailableOnWednesday,
-                                                               IsAvailableOnThursday = st.IsAvailableOnThursday,
-                                                               IsAvailableOnFriday = st.IsAvailableOnFriday,
-                                                               IsAvailableOnSaturday = st.IsAvailableOnSaturday,
-                                                               IsAvailableOnSunday = st.IsAvailableOnSunday
-                                                           })
-                                                           .ToListAsync();
+                result = await _spmuaDbContext.ServiceTypes
+                    .Where(st => st.IsActive && !st.IsDeleted)                                       
+                    .Select(st => new ServiceTypeDTO()
+                    {
+                        ServiceTypeId = st.ServiceTypeId,
+                        ServiceTypeName = st.ServiceTypeName,
+                        ServiceTypePrice = st.ServiceTypePriceHistories
+                            .OrderByDescending(stph => stph.CreatedDate)
+                            .First().ServiceTypePrice,
+                        ServiceTypeDuration = st.ServiceTypeDuration,
+                        IsAvailableOnMonday = st.IsAvailableOnMonday,
+                        IsAvailableOnTuesday = st.IsAvailableOnTuesday,
+                        IsAvailableOnWednesday = st.IsAvailableOnWednesday,
+                        IsAvailableOnThursday = st.IsAvailableOnThursday,
+                        IsAvailableOnFriday = st.IsAvailableOnFriday,
+                        IsAvailableOnSaturday = st.IsAvailableOnSaturday,
+                        IsAvailableOnSunday = st.IsAvailableOnSunday
+                    })
+                    .ToListAsync();
             }
             catch
             {
@@ -53,24 +56,27 @@ namespace SPMUA.Repository.Implementations
 
             try
             {
-                result = await _spmuaDbContext.ServiceTypes.Where(st => st.ServiceTypeId == serviceTypeId 
-                                                                     && st.IsActive 
-                                                                     && !st.IsDeleted)
-                                                           .Select(st => new ServiceTypeDTO()
-                                                           {
-                                                               ServiceTypeId = st.ServiceTypeId,
-                                                               ServiceTypeName = st.ServiceTypeName,
-                                                               ServiceTypePrice = st.ServiceTypePrice,
-                                                               ServiceTypeDuration = st.ServiceTypeDuration,
-                                                               IsAvailableOnMonday = st.IsAvailableOnMonday,
-                                                               IsAvailableOnTuesday = st.IsAvailableOnTuesday,
-                                                               IsAvailableOnWednesday = st.IsAvailableOnWednesday,
-                                                               IsAvailableOnThursday = st.IsAvailableOnThursday,
-                                                               IsAvailableOnFriday = st.IsAvailableOnFriday,
-                                                               IsAvailableOnSaturday = st.IsAvailableOnSaturday,
-                                                               IsAvailableOnSunday = st.IsAvailableOnSunday
-                                                           })
-                                                           .FirstOrDefaultAsync();
+                result = await _spmuaDbContext.ServiceTypes
+                    .Where(st => st.ServiceTypeId == serviceTypeId 
+                                 && st.IsActive 
+                                 && !st.IsDeleted)
+                    .Select(st => new ServiceTypeDTO()
+                    {
+                        ServiceTypeId = st.ServiceTypeId,
+                        ServiceTypeName = st.ServiceTypeName,
+                        ServiceTypePrice = st.ServiceTypePriceHistories
+                            .OrderByDescending(stph => stph.CreatedDate)
+                            .First().ServiceTypePrice,
+                        ServiceTypeDuration = st.ServiceTypeDuration,
+                        IsAvailableOnMonday = st.IsAvailableOnMonday,
+                        IsAvailableOnTuesday = st.IsAvailableOnTuesday,
+                        IsAvailableOnWednesday = st.IsAvailableOnWednesday,
+                        IsAvailableOnThursday = st.IsAvailableOnThursday,
+                        IsAvailableOnFriday = st.IsAvailableOnFriday,
+                        IsAvailableOnSaturday = st.IsAvailableOnSaturday,
+                        IsAvailableOnSunday = st.IsAvailableOnSunday
+                    })
+                    .FirstOrDefaultAsync();
             
                 if (result is null)
                 {
@@ -94,7 +100,6 @@ namespace SPMUA.Repository.Implementations
                 ServiceType newServiceType = new()
                 {
                     ServiceTypeName = serviceTypeDTO.ServiceTypeName,
-                    ServiceTypePrice = serviceTypeDTO.ServiceTypePrice,
                     ServiceTypeDuration= serviceTypeDTO.ServiceTypeDuration,
                     IsAvailableOnMonday = serviceTypeDTO.IsAvailableOnMonday,
                     IsAvailableOnTuesday = serviceTypeDTO.IsAvailableOnTuesday,
@@ -104,6 +109,11 @@ namespace SPMUA.Repository.Implementations
                     IsAvailableOnSaturday = serviceTypeDTO.IsAvailableOnSaturday,
                     IsAvailableOnSunday = serviceTypeDTO.IsAvailableOnSunday
                 };
+
+                newServiceType.ServiceTypePriceHistories.Add(new()
+                {
+                    ServiceTypePrice = serviceTypeDTO.ServiceTypePrice
+                });
 
                 _spmuaDbContext.Add(newServiceType);
                 await _spmuaDbContext.SaveChangesAsync();
@@ -122,16 +132,16 @@ namespace SPMUA.Repository.Implementations
         {
             try
             {
-                ServiceType? serviceType = await _spmuaDbContext.ServiceTypes.Where(st => st.ServiceTypeId == serviceTypeDTO.ServiceTypeId 
-                                                                                       && st.IsActive 
-                                                                                       && !st.IsDeleted)
-                                                                             .AsTracking()
-                                                                             .FirstOrDefaultAsync();
+                ServiceType? serviceType = await _spmuaDbContext.ServiceTypes
+                    .Where(st => st.ServiceTypeId == serviceTypeDTO.ServiceTypeId 
+                              && st.IsActive 
+                              && !st.IsDeleted)
+                    .AsTracking()
+                    .FirstOrDefaultAsync();
 
                 if (serviceType is not null)
                 {
                     serviceType.ServiceTypeName = serviceTypeDTO.ServiceTypeName;
-                    serviceType.ServiceTypePrice = serviceTypeDTO.ServiceTypePrice;
                     serviceType.ServiceTypeDuration = serviceTypeDTO.ServiceTypeDuration;
                     serviceType.IsAvailableOnMonday = serviceTypeDTO.IsAvailableOnMonday;
                     serviceType.IsAvailableOnTuesday = serviceTypeDTO.IsAvailableOnTuesday;
@@ -141,6 +151,22 @@ namespace SPMUA.Repository.Implementations
                     serviceType.IsAvailableOnSaturday = serviceTypeDTO.IsAvailableOnSaturday;
                     serviceType.IsAvailableOnSunday = serviceTypeDTO.IsAvailableOnSunday;
                     serviceType.LastModifiedDate = DateTime.Now;
+
+                    ServiceTypePriceHistory serviceTypePriceHistory = await _spmuaDbContext.ServiceTypePriceHistory
+                        .Where(stph => stph.ServiceTypeId == serviceType.ServiceTypeId)
+                        .OrderByDescending(stph => stph.CreatedDate)
+                        .FirstAsync();
+
+                    if (serviceTypeDTO.ServiceTypePrice != serviceTypePriceHistory.ServiceTypePrice)
+                    {
+                        ServiceTypePriceHistory newServiceTypePriceHistory = new()
+                        {
+                            ServiceTypeId = serviceType.ServiceTypeId,
+                            ServiceTypePrice = serviceTypeDTO.ServiceTypePrice
+                        };
+
+                        _spmuaDbContext.Add(newServiceTypePriceHistory);
+                    }
 
                     await _spmuaDbContext.SaveChangesAsync();
                 }
