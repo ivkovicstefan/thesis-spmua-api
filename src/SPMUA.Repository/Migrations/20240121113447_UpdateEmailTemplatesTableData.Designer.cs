@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPMUA.Repository.Data;
 
@@ -11,9 +12,11 @@ using SPMUA.Repository.Data;
 namespace SPMUA.Repository.Migrations
 {
     [DbContext(typeof(SpmuaDbContext))]
-    partial class SpmuaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240121113447_UpdateEmailTemplatesTableData")]
+    partial class UpdateEmailTemplatesTableData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

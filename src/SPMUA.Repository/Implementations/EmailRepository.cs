@@ -66,7 +66,11 @@ namespace SPMUA.Repository.Implementations
                                                               AppointmentDate = a.AppointmentDate.ToString("dd/MM/yyyy"),
                                                               AppointmentTimeInterval = Helper.CreateAppointmentTimeInterval(TimeOnly.FromDateTime(a.AppointmentDate),
                                                                                                                              a.ServiceType.ServiceTypeDuration,
-                                                                                                                             false).ToString()
+                                                                                                                             false).ToString(),
+                                                              ServiceTypePrice = a.ServiceType.ServiceTypePriceHistories
+                                                                .Where(stph => stph.CreatedDate < a.CreatedDate)
+                                                                .OrderByDescending(stph => stph.CreatedDate)
+                                                                .First().ServiceTypePrice.ToString()
                                                           })
                                                           .FirstAsync();
             }
@@ -98,7 +102,11 @@ namespace SPMUA.Repository.Implementations
                                                               AppointmentDate = a.AppointmentDate.ToString("dd/MM/yyyy"),
                                                               AppointmentTimeInterval = Helper.CreateAppointmentTimeInterval(TimeOnly.FromDateTime(a.AppointmentDate),
                                                                                                                              a.ServiceType.ServiceTypeDuration,
-                                                                                                                             false).ToString()
+                                                                                                                             false).ToString(),
+                                                              ServiceTypePrice = a.ServiceType.ServiceTypePriceHistories
+                                                                .Where(stph => stph.CreatedDate < a.CreatedDate)
+                                                                .OrderByDescending(stph => stph.CreatedDate)
+                                                                .First().ServiceTypePrice.ToString()
                                                           })
                                                           .FirstAsync();
             }
@@ -128,6 +136,10 @@ namespace SPMUA.Repository.Implementations
                                                               AppointmentTimeInterval = Helper.CreateAppointmentTimeInterval(TimeOnly.FromDateTime(a.AppointmentDate),
                                                                                                                              a.ServiceType.ServiceTypeDuration,
                                                                                                                              false).ToString(),
+                                                              ServiceTypePrice = a.ServiceType.ServiceTypePriceHistories
+                                                                .Where(stph => stph.CreatedDate < a.CreatedDate)
+                                                                .OrderByDescending(stph => stph.CreatedDate)
+                                                                .First().ServiceTypePrice.ToString(),
                                                               ResponseComment = a.ResponseComment ?? String.Empty
                                                           })
                                                           .FirstAsync();

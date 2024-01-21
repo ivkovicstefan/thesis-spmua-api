@@ -13,6 +13,7 @@ namespace SPMUA.Model.DTOs.Email
         public string CustomerFullName { get; set; } = String.Empty;
         public string ServiceTypeName { get; set; } = String.Empty;
         public string AppointmentTimeInterval { get; set; } = String.Empty;
+        public string ServiceTypePrice { get; set; } = String.Empty;
         public string ResponseComment { get; set; } = String.Empty;
 
     }
