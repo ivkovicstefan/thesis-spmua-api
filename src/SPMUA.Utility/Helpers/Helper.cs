@@ -24,6 +24,9 @@ namespace SPMUA.Utility.Helpers
 
         public static TimeInterval CreateAppointmentTimeInterval(TimeOnly time, int duration, bool isRoundToNextHourEnabled = true)
         {
+            // Flatten the time 
+            time = new TimeOnly(time.Hour, time.Minute, 0);
+
             return new TimeInterval(time, isRoundToNextHourEnabled ? RoundToNextHour(time.AddMinutes(duration)) 
                                                                    : time.AddMinutes(duration));
         }

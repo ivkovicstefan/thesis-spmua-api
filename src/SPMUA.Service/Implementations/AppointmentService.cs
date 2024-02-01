@@ -144,10 +144,10 @@ namespace SPMUA.Service.Implementations
 
             TimeInterval requestedInterval
                 = Helper.CreateAppointmentTimeInterval(TimeOnly.FromDateTime(date), requestedServiceType.ServiceTypeDuration);
-            
-            // Check if there is overlapping between requested and booked intervals
 
-            if (bookedIntervals.Any(bi => bi.EndingTime > requestedInterval.StartingTime 
+            // Check if there is overlapping between requested and booked intervals
+        
+            if (bookedIntervals.Any(bi => bi.EndingTime > requestedInterval.StartingTime
                                        && bi.StartingTime < requestedInterval.EndingTime))
             {
                 return false;
@@ -155,7 +155,7 @@ namespace SPMUA.Service.Implementations
 
             // Check if requested interval is out of working hours
 
-            if (requestedInterval.StartingTime < openingTime || requestedInterval.EndingTime > closingTime)
+            if (requestedInterval.StartingTime < openingTime || requestedInterval.StartingTime >= closingTime)
             {
                 return false;
             }
