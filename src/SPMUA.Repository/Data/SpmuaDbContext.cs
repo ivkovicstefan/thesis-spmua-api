@@ -45,7 +45,10 @@ namespace SPMUA.Repository.Data
             modelBuilder.Entity<AppointmentStatus>()
                         .HasData(new AppointmentStatus { AppointmentStatusId = 1, AppointmentStatusName = "Confirmation Pending" },
                                  new AppointmentStatus { AppointmentStatusId = 2, AppointmentStatusName = "Confirmed" },
-                                 new AppointmentStatus { AppointmentStatusId = 3, AppointmentStatusName = "Rejected" });
+                                 new AppointmentStatus { AppointmentStatusId = 3, AppointmentStatusName = "Rejected" },
+                                 new AppointmentStatus { AppointmentStatusId = 4, AppointmentStatusName = "Completed" },
+                                 new AppointmentStatus { AppointmentStatusId = 5, AppointmentStatusName = "Expired" },
+                                 new AppointmentStatus { AppointmentStatusId = 6, AppointmentStatusName = "Missed" });
 
             modelBuilder.Entity<ServiceType>()
                         .HasData(new ServiceType { ServiceTypeId = 1, ServiceTypeName = "Makeup", ServiceTypeDuration = 60, IsAvailableOnMonday = true, IsAvailableOnTuesday = true, IsAvailableOnWednesday = true, IsAvailableOnThursday = true, IsAvailableOnFriday = true, IsAvailableOnSaturday = true, IsAvailableOnSunday = true },
