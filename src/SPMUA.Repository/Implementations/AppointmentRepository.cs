@@ -26,8 +26,7 @@ namespace SPMUA.Repository.Implementations
 
             try
             {
-                result = await _spmuaDbContext.Appointments.Where(a => a.AppointmentDate >= DateTime.Now
-                                                                    && a.IsActive
+                result = await _spmuaDbContext.Appointments.Where(a => a.IsActive
                                                                     && !a.IsDeleted)
                                                            .Select(a => new AppointmentDTO() 
                                                            { 
