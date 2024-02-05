@@ -35,9 +35,13 @@ namespace SPMUA.Service.Implementations
             _emailQueue = emailQueue;
         }
 
-        public async Task<List<AppointmentDTO>> GetAllAppointmentsAsync()
+        public async Task<List<AppointmentDTO>> GetAllAppointmentsAsync(AppointmentFiltersDTO appointmentFiltersDTO)
         {
-            return await _appointmentRepository.GetAllAppointmentsAsync();
+            RequestValidator<AppointmentFiltersDTOValidator, AppointmentFiltersDTO> validator = new();
+
+            validator.Validate(appointmentFiltersDTO);
+
+            return await _appointmentRepository.GetAllAppointmentsAsync(appointmentFiltersDTO);
         }
 
         public async Task<AppointmentDTO> GetAppointmentByIdAsync(int appointmentId)

@@ -6,7 +6,7 @@ namespace SPMUA.Repository.Contracts
 {
     public interface IAppointmentRepository
     {
-        Task<List<AppointmentDTO>> GetAllAppointmentsAsync();
+        Task<List<AppointmentDTO>> GetAllAppointmentsAsync(AppointmentFiltersDTO appointmentFiltersDTO);
 
         Task<AppointmentDTO> GetAppointmentByIdAsync(int appointmentId);
 

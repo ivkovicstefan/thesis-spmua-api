@@ -5,7 +5,7 @@ namespace SPMUA.Service.Contracts
 {
     public interface IAppointmentService
     {
-        Task<List<AppointmentDTO>> GetAllAppointmentsAsync();
+        Task<List<AppointmentDTO>> GetAllAppointmentsAsync(AppointmentFiltersDTO appointmentFiltersDTO);
 
         Task<AppointmentDTO> GetAppointmentByIdAsync(int appointmentId);
 

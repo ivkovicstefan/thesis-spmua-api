@@ -27,9 +27,10 @@ namespace SPMUA.API.Controllers
         [Authorize]
         [HttpGet("appointments")]
         [ProducesResponseType(typeof(List<AppointmentDTO>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAppointmentsAsync()
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllAppointmentsAsync([FromQuery] AppointmentFiltersDTO appointmentFiltersDTO)
         {
-            return new OkObjectResult(await _appointmentService.GetAllAppointmentsAsync());
+            return new OkObjectResult(await _appointmentService.GetAllAppointmentsAsync(appointmentFiltersDTO));
         }
 
         [AllowAnonymous]

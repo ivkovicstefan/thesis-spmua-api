@@ -20,29 +20,45 @@ namespace SPMUA.Repository.Implementations
             _spmuaDbContext = spmuaDbContext;
         }
 
-        public async Task<List<AppointmentDTO>> GetAllAppointmentsAsync()
+        public async Task<List<AppointmentDTO>> GetAllAppointmentsAsync(AppointmentFiltersDTO appointmentFiltersDTO)
         {
             List<AppointmentDTO> result = new();
 
             try
             {
-                result = await _spmuaDbContext.Appointments.Where(a => a.IsActive
-                                                                    && !a.IsDeleted)
-                                                           .Select(a => new AppointmentDTO() 
-                                                           { 
-                                                               AppointmentId = a.AppointmentId,
-                                                               CustomerFirstName = a.CustomerFirstName,
-                                                               CustomerLastName = a.CustomerLastName,
-                                                               CustomerEmail = a.CustomerEmail,
-                                                               CustomerPhone = a.CustomerPhone,
-                                                               AppointmentDate = a.AppointmentDate,
-                                                               ServiceTypeId = a.ServiceTypeId,
-                                                               ServiceTypeName = a.ServiceType.ServiceTypeName,
-                                                               AppointmentStatusId = a.AppointmentStatusId,
-                                                               AppointmentStatusName = a.AppointmentStatus.AppointmentStatusName,
-                                                               CreatedDate = a.CreatedDate
-                                                           })
-                                                           .ToListAsync();
+                result = await _spmuaDbContext.Appointments
+                    .Where(a => a.IsActive
+                        && !a.IsDeleted
+                        && (
+                            (appointmentFiltersDTO.AppointmentDate.HasValue && a.AppointmentDate.Date == appointmentFiltersDTO.AppointmentDate.Value.Date)
+                            || (!appointmentFiltersDTO.AppointmentDate.HasValue)
+                        )
+                        && (
+                            (appointmentFiltersDTO.ServiceTypeId.HasValue && a.ServiceTypeId == appointmentFiltersDTO.ServiceTypeId)
+                            || (!appointmentFiltersDTO.ServiceTypeId.HasValue)
+                        )
+                        && (
+                            (appointmentFiltersDTO.CustomerFullName.Length > 0 && (a.CustomerFirstName + " " + a.CustomerLastName).Contains(appointmentFiltersDTO.CustomerFullName))
+                            || (appointmentFiltersDTO.CustomerFullName.Length == 0)
+                        )
+                        && a.CustomerEmail.Contains(appointmentFiltersDTO.CustomerEmail)
+                        && a.CustomerPhone.Contains(appointmentFiltersDTO.CustomerPhone)
+                    )
+                    .Select(a => new AppointmentDTO() 
+                    { 
+                        AppointmentId = a.AppointmentId,
+                        CustomerFirstName = a.CustomerFirstName,
+                        CustomerLastName = a.CustomerLastName,
+                        CustomerEmail = a.CustomerEmail,
+                        CustomerPhone = a.CustomerPhone,
+                        AppointmentDate = a.AppointmentDate,
+                        ServiceTypeId = a.ServiceTypeId,
+                        ServiceTypeName = a.ServiceType.ServiceTypeName,
+                        AppointmentStatusId = a.AppointmentStatusId,
+                        AppointmentStatusName = a.AppointmentStatus.AppointmentStatusName,
+                        CreatedDate = a.CreatedDate
+                    })
+                    .ToListAsync();
             }
             catch
             {
