@@ -22,7 +22,8 @@ namespace SPMUA.Repository.Data
         public DbSet<ServiceTypePriceHistory> ServiceTypePriceHistory { get; set; }
         public DbSet<Vacation> Vacations { get; set; }
         public DbSet<WorkingDay> WorkingDays { get; set; }
-
+        public DbSet<EmailQueue> EmailQueue { get; set; }
+        public DbSet<EmailQueueStatus> EmailQueueStatuses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<WorkingDay>(entity =>
@@ -70,6 +71,11 @@ namespace SPMUA.Repository.Data
 
             modelBuilder.Entity<Admin>()
                         .HasData(new Admin() { AdminId = 1, AdminFirstName = "System", AdminLastName = "Admin", AdminEmail = "ivkovics@outlook.com", PasswordHash = HashService.HashPassword("ninjasaga03") });
+
+            modelBuilder.Entity<EmailQueueStatus>()
+                        .HasData(new EmailQueueStatus() { EmailQueueStatusId = 1, EmailQueueStatusName = "Ready", CreatedDate = new DateTime() },
+                                 new EmailQueueStatus() { EmailQueueStatusId = 2, EmailQueueStatusName = "Sent", CreatedDate = new DateTime() },
+                                 new EmailQueueStatus() { EmailQueueStatusId = 3, EmailQueueStatusName = "Failed", CreatedDate = new DateTime() });
         }
     }
 }

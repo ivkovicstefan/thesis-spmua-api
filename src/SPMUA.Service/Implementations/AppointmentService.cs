@@ -1,11 +1,10 @@
 ﻿using SPMUA.Model.Commons.DataTypes;
 using SPMUA.Model.Dictionaries.Appointment;
-using SPMUA.Model.Dictionaries.EmailTemplate;
+using SPMUA.Model.Dictionaries.Email;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.DTOs.ServiceType;
 using SPMUA.Model.DTOs.Vacation;
 using SPMUA.Model.Exceptions;
-using SPMUA.Model.Queues;
 using SPMUA.Repository.Contracts;
 using SPMUA.Service.Contracts;
 using SPMUA.Service.Validators;
@@ -20,19 +19,19 @@ namespace SPMUA.Service.Implementations
         private readonly IWorkingDayRepository _workingDayRepository;
         private readonly IServiceTypeRepository _serviceTypeRepository;
         private readonly IVacationRepository _vacationRepository;
-        private readonly EmailQueue _emailQueue;
+        private readonly IEmailQueueService _emailQueueService;
 
         public AppointmentService(IAppointmentRepository appointmentRepository,
                                   IWorkingDayRepository workingDayRepository,
                                   IServiceTypeRepository serviceTypeRepository,
                                   IVacationRepository vacationRepository,
-                                  EmailQueue emailQueue)
+                                  IEmailQueueService emailQueueService)
         {
             _appointmentRepository = appointmentRepository;
             _workingDayRepository = workingDayRepository;
             _serviceTypeRepository = serviceTypeRepository;
             _vacationRepository = vacationRepository;
-            _emailQueue = emailQueue;
+            _emailQueueService = emailQueueService;
         }
 
         public async Task<List<AppointmentDTO>> GetAllAppointmentsAsync(AppointmentFiltersDTO appointmentFiltersDTO)
@@ -68,23 +67,10 @@ namespace SPMUA.Service.Implementations
 
             if (!String.IsNullOrEmpty(appointmentDTO.CustomerEmail))
             {
-                EmailQueueItem clientEmailQueueItem = new()
-                {
-                    EmailTemplateId = (int)EmailTemplateEnum.AppointmentRequestConfirmationPending,
-                    EntityId = result,
-                    ToClientEmail = appointmentDTO.CustomerEmail
-                };
-
-                _emailQueue.Enqueue(clientEmailQueueItem);
+                await _emailQueueService.EnqueueEmailAsync(EmailTemplateEnum.AppointmentRequestConfirmationPending, result, appointmentDTO.CustomerEmail);
             }
-
-            EmailQueueItem adminEmailQueueItem = new()
-            {
-                EmailTemplateId = (int)EmailTemplateEnum.AppointmentRequestArrived,
-                EntityId = result
-            };
-
-            _emailQueue.Enqueue(adminEmailQueueItem);
+            
+            await _emailQueueService.EnqueueEmailAsync(EmailTemplateEnum.AppointmentRequestArrived, result);
 
             return result;
         }
@@ -282,15 +268,10 @@ namespace SPMUA.Service.Implementations
 
             if (!String.IsNullOrEmpty(clientEmail))
             {
-                EmailQueueItem clientEmailQueueItem = new()
-                {
-                    EntityId = updateAppointmentStatusDTO.AppointmentId,
-                    EmailTemplateId = updateAppointmentStatusDTO.IsAppointmentConfirmed ? (int)EmailTemplateEnum.AppointmentRequestConfirmed
-                                                                                        : (int)EmailTemplateEnum.AppointmentRequestRejected,
-                    ToClientEmail = clientEmail
-                };
+                EmailTemplateEnum emailTemplateId = updateAppointmentStatusDTO.IsAppointmentConfirmed ? EmailTemplateEnum.AppointmentRequestConfirmed
+                                                                                                      : EmailTemplateEnum.AppointmentRequestRejected;
 
-                _emailQueue.Enqueue(clientEmailQueueItem);
+                await _emailQueueService.EnqueueEmailAsync(emailTemplateId, updateAppointmentStatusDTO.AppointmentId, clientEmail);
             }
         }
 

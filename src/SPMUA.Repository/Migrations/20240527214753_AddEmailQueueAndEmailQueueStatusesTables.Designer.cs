@@ -3,8 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SPMUA.Model.Models;
 using SPMUA.Repository.Data;
 
 #nullable disable
@@ -12,9 +12,11 @@ using SPMUA.Repository.Data;
 namespace SPMUA.Repository.Migrations
 {
     [DbContext(typeof(SpmuaDbContext))]
-    partial class SpmuaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240527214753_AddEmailQueueAndEmailQueueStatusesTables")]
+    partial class AddEmailQueueAndEmailQueueStatusesTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,21 +268,15 @@ namespace SPMUA.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            EmailQueueStatusId = 1,
+                            EmailQueueStatusId = -1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmailQueueStatusName = "Ready"
+                            EmailQueueStatusName = "Failed"
                         },
                         new
                         {
-                            EmailQueueStatusId = 2,
+                            EmailQueueStatusId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EmailQueueStatusName = "Sent"
-                        },
-                        new 
-                        {
-                            EmailQueueStatusId = 3,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmailQueueStatusName = "Failed"
                         });
                 });
 

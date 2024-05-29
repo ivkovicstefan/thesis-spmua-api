@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SPMUA.Model.Dictionaries.EmailTemplate
+namespace SPMUA.Model.Dictionaries.Email
 {
     public enum EmailTemplateEnum
     {

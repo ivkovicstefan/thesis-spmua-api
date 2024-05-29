@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SPMUA.Repository.Contracts
 {
-    public interface IEmailRepository
+    public interface IEmailQueueRepository
     {
         Task<EmailTemplateDTO> GetEmailTemplate(int emailTemplateId);
 
@@ -17,5 +17,7 @@ namespace SPMUA.Repository.Contracts
         Task<AppointmentRequestArrivedEmailParamDTO> GetAppointmentRequestArrivedEmailData(int appointmentId);
 
         Task<AppointmentResponseEmailParamDTO> GetAppointmentResponseEmailData(int appointmentId);
+
+        Task<int> CreateEmailQueueItemAsync(EmailQueueItemDTO emailQueueItem);
     }
 }
