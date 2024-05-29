@@ -11,55 +11,57 @@ namespace SPMUA.Repository.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-				CREATE PROCEDURE [dbo].[USP_EmailQueueItem_Set]
-				(
-					@EmailQueueId INT,
-					@NoOfAttempts INT,
-					@EmailQueueStatusId INT
-				)
-				AS
-				BEGIN
-					BEGIN TRY
-						BEGIN TRAN
-							UPDATE 
-								dbo.[EmailQueue]
-							SET
-								NoOfAttempts = @NoOfAttempts,
-								EmailQueueStatusId = @EmailQueueStatusId
-							WHERE
-								EmailQueueId = @EmailQueueId
-						COMMIT
-					END TRY
-					BEGIN CATCH
-						IF (@@TRANCOUNT > 0)
-							BEGIN
-								ROLLBACK
-							END
-					END CATCH
-				END
+CREATE PROCEDURE [dbo].[USP_EmailQueueItem_Set]
+(
+	@EmailQueueId INT,
+	@NoOfAttempts INT,
+	@EmailQueueStatusId INT
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRAN
+			UPDATE 
+				dbo.[EmailQueue]
+			SET
+				NoOfAttempts = @NoOfAttempts,
+				EmailQueueStatusId = @EmailQueueStatusId
+			WHERE
+				EmailQueueId = @EmailQueueId
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		IF (@@TRANCOUNT > 0)
+			BEGIN
+				ROLLBACK
+			END
+	END CATCH
+END
 			");
 
             migrationBuilder.Sql(@"
-				CREATE PROCEDURE [dbo].[USP_EmailQueueItems_Get] 
-				(
-					@NoOfItems INT,
-					@MaxNoOfAttempts INT
-				)
-				AS
-				BEGIN
-					SELECT TOP (@NoOfItems)
-						EmailQueueId,
-						ToEmail,
-						EmailSubject,
-						EmailBody
-					FROM 
-						dbo.EmailQueue
-					WHERE 
-						NoOfAttempts < @MaxNoOfAttempts
-						AND EmailQueueStatusId <> 2
-					ORDER BY
-						CreatedDate
-				END
+CREATE PROCEDURE [dbo].[USP_EmailQueueItems_Get] 
+(
+	@NoOfItems INT,
+	@MaxNoOfAttempts INT
+)
+AS
+BEGIN
+	SELECT TOP (@NoOfItems)
+		EmailQueueId,
+		ToEmail,
+		EmailSubject,
+		EmailBody,
+		NoOfAttempts,
+		EmailQueueStatusId
+	FROM 
+		dbo.EmailQueue
+	WHERE 
+		NoOfAttempts < @MaxNoOfAttempts
+		AND EmailQueueStatusId <> 2
+	ORDER BY
+		CreatedDate
+END			
 			");
         }
 
