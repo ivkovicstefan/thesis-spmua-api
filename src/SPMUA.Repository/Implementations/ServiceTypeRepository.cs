@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SPMUA.Model.DTOs.ServiceType;
 using SPMUA.Model.Exceptions;
-using SPMUA.Model.Models;
+using SPMUA.Repository.Models;
 using SPMUA.Repository.Contracts;
 using SPMUA.Repository.Data;
 

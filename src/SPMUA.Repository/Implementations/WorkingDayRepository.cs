@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SPMUA.Model.DTOs.WorkingDay;
-using SPMUA.Model.Models;
+using SPMUA.Repository.Models;
 using SPMUA.Repository.Contracts;
 using SPMUA.Repository.Data;
 using SPMUA.Utility.Helpers;

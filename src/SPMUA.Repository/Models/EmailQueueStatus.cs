@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SPMUA.Model.Models
+namespace SPMUA.Repository.Models
 {
     public class EmailQueueStatus
     {

@@ -3,7 +3,7 @@ using SPMUA.Model.Commons.DataTypes;
 using SPMUA.Model.Dictionaries.Appointment;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Model.Exceptions;
-using SPMUA.Model.Models;
+using SPMUA.Repository.Models;
 using SPMUA.Repository.Contracts;
 using SPMUA.Repository.Data;
 using SPMUA.Utility.Helpers;

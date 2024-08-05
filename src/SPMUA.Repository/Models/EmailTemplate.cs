@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SPMUA.Model.Models
+namespace SPMUA.Repository.Models
 {
     public class EmailTemplate
     {

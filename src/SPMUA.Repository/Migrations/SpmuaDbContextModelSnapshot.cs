@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SPMUA.Model.Models;
+using SPMUA.Repository.Models;
 using SPMUA.Repository.Data;
 
 #nullable disable

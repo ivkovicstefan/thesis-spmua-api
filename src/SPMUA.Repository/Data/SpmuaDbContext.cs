@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SPMUA.Model.Models;
+using SPMUA.Repository.Models;
 using SPMUA.Utility.Security;
 using System.Reflection.Metadata;
 using TinyHelpers.EntityFrameworkCore.Comparers;
