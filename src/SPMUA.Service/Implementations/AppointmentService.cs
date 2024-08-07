@@ -275,7 +275,7 @@ namespace SPMUA.Service.Implementations
             }
         }
 
-        public async Task<string> GetAppointmentmentStatusAsync(int appointmentId, string customerPhone)
+        public async Task<AppointmentStatusDTO> GetAppointmentmentStatusAsync(int appointmentId, string customerPhone)
         {
             AppointmentStatusDTO result = new();
 
@@ -294,7 +294,7 @@ namespace SPMUA.Service.Implementations
                 result.AppointmentStatusName = requestedAppointment.AppointmentStatusName;
             }
 
-            return requestedAppointment.AppointmentStatusName;
+            return result;
         }
     }
 }
