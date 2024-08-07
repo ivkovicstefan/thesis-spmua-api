@@ -12,6 +12,8 @@ namespace SPMUA.Model.Dictionaries.Commons
         public static string InternalServerErrorDescription { get; } = "Some error occurred while processing the request.";
         public static string ValidationErrorTitle { get; } = "Validation Error";
         public static string ValidationErrorDescription { get; } = "One or more values entered are not valid.";
+        public static string UnauthorizedRequestErrorTitle { get; set; } = "Unauthorized Access Error";
+        public static string UnauthorizedRequestErrorDescription { get; set; } = "Requested resource exists, but authorization criteria is not satisfied.";
         public static string InvalidCredentialsErrorTitle { get; } = "Invalid Credentials Error";
         public static string InvalidCredentialsErrorDesciption { get; } = "Email or password is incorrect.";
         public static string EntityNotFoundErrorTitle { get; } = "Entity Not Found Error";

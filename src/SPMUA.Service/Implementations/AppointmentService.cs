@@ -275,11 +275,28 @@ namespace SPMUA.Service.Implementations
             }
         }
 
-        public async Task<string> GetAppointmentmentStatusByIdAsync(int appointmentId)
+        public async Task<string> GetAppointmentmentStatusAsync(int appointmentId, string customerPhone)
         {
+            AppointmentStatusDTO result = new();
+
             AppointmentDTO requestedAppointment = await _appointmentRepository.GetAppointmentByIdAsync(appointmentId);
+            
+            if (requestedAppointment.CustomerPhone != customerPhone)
+            {
+                throw new UnauthorizedRequestException("Phone number is not correct");
+            }
+            else
+            {
+                result.AppointmentId = requestedAppointment.AppointmentId;
+                result.CustomerFirstName = requestedAppointment.CustomerFirstName;
+                result.CustomerLastName = requestedAppointment.CustomerLastName;
+                result.AppointmentDate = requestedAppointment.AppointmentDate;
+                result.AppointmentStatusName = requestedAppointment.AppointmentStatusName;
+            }
 
             return requestedAppointment.AppointmentStatusName;
         }
     }
 }
+
+

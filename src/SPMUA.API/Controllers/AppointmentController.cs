@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SPMUA.Model.Commons.ErrorHandling;
 using SPMUA.Model.DTOs.Appointment;
 using SPMUA.Service.Contracts;
 
@@ -80,11 +81,12 @@ namespace SPMUA.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("appointment/{appointmentId}/status")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAppointmentStatusByIdAsync([FromRoute] int appointmentId)
+        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(AppointmentStatusDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAppointmentStatusAsync([FromRoute] int appointmentId, [FromQuery] string customerPhone)
         {
-            return new OkObjectResult(await _appointmentService.GetAppointmentmentStatusByIdAsync(appointmentId));
+            return new OkObjectResult(await _appointmentService.GetAppointmentmentStatusAsync(appointmentId, customerPhone));
         }
 
         [Authorize]

@@ -28,6 +28,18 @@ namespace SPMUA.API.Middlewares
 
                 await context.Response.WriteAsJsonAsync(errorDetails);
             }
+			catch (UnauthorizedRequestException ex)
+			{
+				context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+
+				ErrorDetails errorDetails = new()
+				{
+					Title = ErrorDetailsMessage.UnauthorizedRequestErrorTitle,
+					Description = ex.Message ?? ErrorDetailsMessage.UnauthorizedRequestErrorDescription
+				};
+
+				await context.Response.WriteAsJsonAsync(errorDetails);
+			}
 			catch (InvalidCredentialsException)
 			{
 				context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
