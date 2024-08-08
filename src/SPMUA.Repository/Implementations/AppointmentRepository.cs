@@ -30,7 +30,7 @@ namespace SPMUA.Repository.Implementations
                     .Where(a => a.IsActive
                         && !a.IsDeleted
                         && (
-                            (appointmentFiltersDTO.AppointmentDate.HasValue && a.AppointmentDate.Date == appointmentFiltersDTO.AppointmentDate.Value.Date)
+                            (appointmentFiltersDTO.AppointmentDate.HasValue && a.AppointmentDate > appointmentFiltersDTO.AppointmentDate.Value && a.AppointmentDate < appointmentFiltersDTO.AppointmentDate.Value.AddDays(1))
                             || (!appointmentFiltersDTO.AppointmentDate.HasValue)
                         )
                         && (
